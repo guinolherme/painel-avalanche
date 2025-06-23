@@ -6,292 +6,236 @@
     <title>Painel de Controle: Operação Avalanche</title>
     <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
     <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap)" rel="stylesheet">
-    <script src="[https://cdn.jsdelivr.net/npm/chart.js](https://cdn.jsdelivr.net/npm/chart.js)"></script>
     <style>
         body { font-family: 'Inter', sans-serif; }
-        .tab-active { border-bottom-color: #4f46e5; color: #4f46e5; }
+        .tab-active { border-bottom-color: #4f46e5; color: #4f46e5; font-weight: 600; }
         .modal-backdrop {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.6); display: none; 
+            background-color: rgba(17, 24, 39, 0.6); display: none; 
             justify-content: center; align-items: center; z-index: 50;
         }
         .modal-backdrop.flex { display: flex; }
-        .modal-content { max-height: 90vh; }
-        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #4f46e5; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        .loader { border: 4px solid #e5e7eb; border-top: 4px solid #4f46e5; border-radius: 50%; width: 32px; height: 32px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body class="bg-gray-50">
+
+    <div id="status-overlay" class="fixed inset-0 z-50 flex flex-col justify-center items-center text-center bg-gray-100">
+        <div id="loader" class="loader"></div>
+        <p class="mt-4 text-gray-700" id="loading-message">Iniciando Conexão...</p>
+    </div>
 
     <div id="app-container" class="hidden">
-        <div class="container mx-auto p-4 md:p-6 lg:p-8">
+        <div class="container mx-auto p-4 sm:p-6 lg:p-8">
             <header class="mb-8">
-                <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Painel de Controle</h1>
+                <h1 class="text-3xl font-bold text-gray-900">Painel de Controle</h1>
                 <p class="text-gray-600 mt-1">Operação Avalanche: Sprint 1</p>
             </header>
 
             <div class="border-b border-gray-200 mb-6">
-                <nav class="-mb-px flex space-x-6" id="tabs-nav">
-                    <!-- Abas serão renderizadas aqui -->
-                </nav>
+                <nav class="-mb-px flex space-x-6 overflow-x-auto" id="tabs-nav"></nav>
             </div>
 
-            <main id="main-content">
-                <!-- Conteúdo das abas será renderizado aqui -->
-            </main>
+            <main id="main-content"></main>
         </div>
     </div>
-    
-    <div id="loading-overlay" class="fixed inset-0 bg-gray-100 z-50 flex flex-col justify-center items-center text-center">
-        <div class="loader"></div>
-        <p class="mt-4 text-gray-600" id="loading-message">A iniciar...</p>
-    </div>
 
-    <!-- Modal para Adicionar Dossiê -->
     <div id="dossier-modal" class="modal-backdrop">
-        <div class="bg-white rounded-lg shadow-xl w-11/12 max-w-2xl p-6 modal-content">
+        <div class="bg-white rounded-lg shadow-xl w-11/12 max-w-2xl p-6">
             <h2 class="text-xl font-bold mb-4">Adicionar Novo Dossiê</h2>
-            <p class="text-sm text-gray-600 mb-4">Cole o payload JSON fornecido para criar um novo vídeo para este canal.</p>
-            <textarea id="json-payload-input" class="w-full h-48 p-2 border border-gray-300 rounded-md font-mono text-sm" placeholder='{"id": "CANAL_00X", ...}'></textarea>
-            <div id="json-error" class="text-red-500 text-sm mt-2 hidden"></div>
+            <p class="text-sm text-gray-600 mb-4">Cole o payload JSON que eu te forneci para criar um novo vídeo.</p>
+            <textarea id="json-payload-input" class="w-full h-56 p-2 border border-gray-300 rounded-md font-mono text-xs" placeholder='{"id": "...", "tituloOtimizado": "..."}'></textarea>
+            <div id="json-error" class="text-red-600 text-sm mt-2 hidden"></div>
             <div class="mt-6 flex justify-end space-x-4">
                 <button data-action="close-dossier-modal" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">Cancelar</button>
-                <button data-action="save-dossier" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Salvar</button>
+                <button data-action="save-dossier" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Salvar no Firebase</button>
             </div>
         </div>
     </div>
     
-    <!-- Firebase SDKs (carregados pelo Hosting) -->
     <script src="/__/firebase/10.12.2/firebase-app-compat.js"></script>
     <script src="/__/firebase/10.12.2/firebase-auth-compat.js"></script>
     <script src="/__/firebase/10.12.2/firebase-firestore-compat.js"></script>
     <script src="/__/firebase/init.js"></script>
 
     <script type="module">
-        // --- Estado Global ---
-        let db, auth, userId;
+        // --- Estado Global e Constantes ---
+        let db, auth;
         let allVideos = [];
         const channelCodes = ['SG', 'UMC', 'OC', 'BD', 'FA'];
+        const DOM = {
+            statusOverlay: document.getElementById('status-overlay'),
+            loader: document.getElementById('loader'),
+            loadingMessage: document.getElementById('loading-message'),
+            appContainer: document.getElementById('app-container'),
+            tabsNav: document.getElementById('tabs-nav'),
+            mainContent: document.getElementById('main-content'),
+            dossierModal: document.getElementById('dossier-modal'),
+            jsonPayloadInput: document.getElementById('json-payload-input'),
+            jsonError: document.getElementById('json-error'),
+        };
 
-        // --- Função Principal de Inicialização ---
-        async function initializeApp() {
-            const loadingMessage = document.getElementById('loading-message');
+        // --- Funções de Estado da UI ---
+        const setStatus = (message, isError = false) => {
+            DOM.loadingMessage.textContent = message;
+            if (isError) {
+                DOM.loader.style.display = 'none';
+                DOM.loadingMessage.classList.add('text-red-600', 'font-semibold');
+            } else {
+                DOM.loader.style.display = 'block';
+                DOM.loadingMessage.classList.remove('text-red-600', 'font-semibold');
+            }
+        };
+
+        const showApp = () => {
+            DOM.statusOverlay.style.display = 'none';
+            DOM.appContainer.style.display = 'block';
+        };
+
+        // --- Lógica Principal ---
+        async function main() {
             try {
-                // 1. Espera que o script de inicialização do Firebase Hosting carregue o objeto `firebase`
-                loadingMessage.textContent = "A inicializar o Firebase...";
-                await waitForFirebase();
+                await new Promise((resolve, reject) => {
+                    const timeout = setTimeout(() => reject(new Error("Firebase SDK não carregou.")), 5000);
+                    const checkInterval = setInterval(() => {
+                        if (window.firebase) {
+                            clearInterval(checkInterval);
+                            clearTimeout(timeout);
+                            resolve();
+                        }
+                    }, 100);
+                });
 
-                // 2. Inicializa os serviços
+                setStatus("Firebase SDK carregado. A autenticar...");
                 auth = firebase.auth();
                 db = firebase.firestore();
                 
-                // 3. Aguarda a autenticação
-                loadingMessage.textContent = "A autenticar utilizador...";
-                const user = await authenticateUser();
-                userId = user.uid;
+                await auth.signInAnonymously();
+                const user = auth.currentUser;
+                if (!user) throw new Error("Falha na autenticação anónima.");
 
-                // 4. Inicializa os listeners de dados, só depois da autenticação
-                loadingMessage.textContent = "A ligar ao banco de dados...";
+                setStatus("Autenticado. A carregar dados...");
                 initializeDataListeners();
-                
-                // 5. Inicializa os listeners de UI, que já podem estar prontos
                 initializeUIListeners();
                 renderInitialLayout();
 
-            } catch(error) {
-                console.error("Erro na inicialização:", error);
-                loadingMessage.innerHTML = `<span class="text-red-500 font-bold">Falha Crítica na Inicialização!</span><br><p class="text-sm mt-2">${error.message}</p>`;
+            } catch (error) {
+                console.error("Falha Crítica na Inicialização:", error);
+                setStatus(`Erro: ${error.message}`, true);
             }
         }
 
-        // --- Funções Auxiliares de Inicialização ---
-        function waitForFirebase() {
-            return new Promise((resolve, reject) => {
-                const timeout = 5000; // 5 segundos de tempo limite
-                const checkInterval = setInterval(() => {
-                    if (window.firebase) {
-                        clearInterval(checkInterval);
-                        resolve();
-                    }
-                }, 100);
-                setTimeout(() => {
-                    clearInterval(checkInterval);
-                    reject(new Error("Firebase SDK não carregou a tempo. Verifique o console de rede."));
-                }, timeout);
-            });
-        }
-        
-        function authenticateUser() {
-            return new Promise((resolve, reject) => {
-                 auth.onAuthStateChanged(user => {
-                    if (user) {
-                        resolve(user);
-                    }
-                });
-                auth.signInAnonymously().catch(reject);
-            });
-        }
-        
-        // --- Listeners de Dados e UI ---
+        // --- Listeners (Dados e UI) ---
         function initializeDataListeners() {
-            if (!userId) return;
-            const videoCollectionRef = db.collection('videos');
-            
-            videoCollectionRef.onSnapshot((snapshot) => {
-                allVideos = snapshot.docs.map(doc => ({...doc.data(), docId: doc.id}));
+            const videosRef = db.collection('videos');
+            videosRef.onSnapshot(snapshot => {
+                allVideos = snapshot.docs.map(doc => ({ ...doc.data(), docId: doc.id }));
                 renderCurrentTab();
-                // Mostra o app e esconde o loading SÓ quando os dados chegam pela primeira vez
-                document.getElementById('loading-overlay').style.display = 'none';
-                document.getElementById('app-container').style.display = 'block';
-            }, (error) => {
-                console.error("Erro ao buscar dados do Firestore: ", error);
-                document.getElementById('loading-message').innerHTML = `<span class="text-red-500 font-bold">Erro ao Ler Banco de Dados!</span><br><p class="text-sm mt-2">Verifique as regras de segurança e se a coleção 'videos' foi criada no Firestore.</p>`;
+                showApp(); // Mostra o app SÓ depois que os dados iniciais chegam
+            }, error => {
+                console.error("Erro no listener do Firestore:", error);
+                setStatus("Erro ao ler o banco de dados. Verifique as regras de segurança.", true);
             });
         }
-
+        
         function initializeUIListeners() {
             document.addEventListener('click', handleGlobalClick);
         }
 
         async function handleGlobalClick(e) {
-            const actionTarget = e.target.closest('[data-action]');
-            if (!actionTarget) return;
+            const target = e.target.closest('[data-action]');
+            if (!target) return;
 
-            const { action, tab, channelCode } = actionTarget.dataset;
+            const { action, tab, channelCode } = target.dataset;
 
-            switch(action) {
+            switch (action) {
                 case 'navigate-tab':
-                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('tab-active'));
-                    actionTarget.classList.add('tab-active');
+                    DOM.tabsNav.querySelectorAll('.tab').forEach(t => t.classList.remove('tab-active'));
+                    target.classList.add('tab-active');
                     renderCurrentTab();
                     break;
                 case 'open-add-dossier':
-                    const modal = document.getElementById('dossier-modal');
-                    modal.dataset.currentChannel = channelCode;
-                    modal.classList.add('flex');
-                    document.getElementById('json-payload-input').value = '';
-                    document.getElementById('json-error').classList.add('hidden');
+                    DOM.dossierModal.dataset.currentChannel = channelCode;
+                    DOM.jsonPayloadInput.value = '';
+                    DOM.jsonError.classList.add('hidden');
+                    DOM.dossierModal.classList.add('flex');
                     break;
                 case 'close-dossier-modal':
-                     document.getElementById('dossier-modal').classList.remove('flex');
+                    DOM.dossierModal.classList.remove('flex');
                     break;
                 case 'save-dossier':
-                    await saveDossier();
+                    const saveButton = target;
+                    saveButton.disabled = true;
+                    saveButton.textContent = 'A salvar...';
+                    try {
+                        const channel = DOM.dossierModal.dataset.currentChannel;
+                        const data = JSON.parse(DOM.jsonPayloadInput.value);
+
+                        if (!data.id || !data.tituloOtimizado) throw new Error("JSON precisa ter 'id' e 'tituloOtimizado'.");
+                        if (!data.id.startsWith(channel)) throw new Error(`O ID "${data.id}" não pertence ao canal correto.`);
+
+                        const docRef = db.collection("videos").doc(data.id);
+                        await docRef.set({ ...data, createdAt: firebase.firestore.FieldValue.serverTimestamp(), status: 'Para Produzir' });
+                        DOM.dossierModal.classList.remove('flex');
+                    } catch (err) {
+                        DOM.jsonError.textContent = `Erro: ${err.message}`;
+                        DOM.jsonError.classList.remove('hidden');
+                    } finally {
+                        saveButton.disabled = false;
+                        saveButton.textContent = 'Salvar no Firebase';
+                    }
                     break;
             }
         }
         
-        async function saveDossier() {
-            const modal = document.getElementById('dossier-modal');
-            const jsonInput = document.getElementById('json-payload-input').value;
-            const errorDiv = document.getElementById('json-error');
-            const channelCode = modal.dataset.currentChannel;
-            
-            try {
-                const data = JSON.parse(jsonInput);
-                if (!data.id || !data.tituloOtimizado) throw new Error("JSON precisa ter 'id' e 'tituloOtimizado'.");
-                if (!data.id.startsWith(channelCode)) throw new Error(`ID "${data.id}" não pertence ao canal ${getChannelName(channelCode)}.`);
-                
-                const videoRef = db.collection("videos").doc(data.id);
-                await videoRef.set({ ...data, createdAt: firebase.firestore.FieldValue.serverTimestamp(), status: 'Para Produzir' });
-                
-                modal.classList.remove('flex');
-            } catch (err) {
-                errorDiv.textContent = `Erro: ${err.message}`;
-                errorDiv.classList.remove('hidden');
-            }
-        }
-
-        // --- Funções de Renderização ---
-        function getActiveTab() {
-            return document.querySelector('.tab-active')?.dataset.tab || 'dashboard';
-        }
-
-        function renderCurrentTab() {
-            const activeTab = getActiveTab();
-            const mainContent = document.getElementById('main-content');
-            mainContent.innerHTML = ''; 
-
-            const pane = document.createElement('div');
-            pane.id = `${activeTab}-content`;
-            
-            if (activeTab === 'dashboard') {
-                renderDashboard(pane);
-            } else {
-                renderChannelContent(activeTab, pane);
-            }
-            mainContent.appendChild(pane);
-        }
-
-        function getChannelName(channelCode) {
-            const names = {SG: 'Surto Generativo', UMC: 'Um Minuto de Conhecimento', OC: 'Oásis Cotidiano', BD: 'Bestiário Digital', FA: 'Fábrica de Arrepios'};
-            return names[channelCode] || 'Desconhecido';
-        }
-        
+        // --- Renderização ---
         function renderInitialLayout() {
-            const nav = document.getElementById('tabs-nav');
-            nav.innerHTML = `
+            const getChannelName = code => ({SG: 'Surto Generativo', UMC: 'Um Minuto de Conhecimento', OC: 'Oásis Cotidiano', BD: 'Bestiário Digital', FA: 'Fábrica de Arrepios'}[code]);
+            DOM.tabsNav.innerHTML = `
                 <button data-action="navigate-tab" data-tab="dashboard" class="py-4 px-1 border-b-2 font-medium text-sm tab tab-active">Visão Geral</button>
                 ${channelCodes.map(code => `<button data-action="navigate-tab" data-tab="${code}" class="py-4 px-1 border-b-2 font-medium text-sm tab">${getChannelName(code)}</button>`).join('')}
             `;
             renderCurrentTab();
         }
+        
+        function renderCurrentTab() {
+            const activeTab = DOM.tabsNav.querySelector('.tab-active')?.dataset.tab || 'dashboard';
+            DOM.mainContent.innerHTML = ''; // Limpa antes de renderizar
 
+            if (activeTab === 'dashboard') {
+                renderDashboard(DOM.mainContent);
+            } else {
+                renderChannelContent(activeTab, DOM.mainContent);
+            }
+        }
+        
         function renderChannelContent(channelCode, container) {
-            const channelVideos = allVideos.filter(v => v.id.startsWith(channelCode));
+            const getChannelName = code => ({SG: 'Surto Generativo', UMC: 'Um Minuto de Conhecimento', OC: 'Oásis Cotidiano', BD: 'Bestiário Digital', FA: 'Fábrica de Arrepios'}[code]);
+            const channelVideos = allVideos.filter(v => v.id.startsWith(channelCode)).sort((a,b) => a.id.localeCompare(b.id));
             let html = `
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-bold text-gray-800">${getChannelName(channelCode)}</h2>
                     <button data-action="open-add-dossier" data-channel-code="${channelCode}" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm font-medium">+ Adicionar Dossiê</button>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">`;
-
+            
             if (channelVideos.length > 0) {
-                channelVideos.sort((a,b) => a.id.localeCompare(b.id)).forEach(video => {
-                    html += `<div class="bg-white p-5 rounded-lg shadow"><h3 class="font-bold text-gray-900 truncate">${video.tituloOtimizado}</h3><p class="text-sm text-gray-500 mt-1">${video.id}</p></div>`;
-                });
+                html += channelVideos.map(video => `<div class="bg-white p-5 rounded-lg shadow"><h3 class="font-bold text-gray-900 truncate">${video.tituloOtimizado}</h3><p class="text-sm text-gray-500 mt-1">${video.id}</p></div>`).join('');
             } else {
                  html += `<div class="col-span-full text-center py-10 bg-white rounded-lg shadow"><p class="text-gray-500">Nenhum dossiê para este canal.</p><p class="text-sm text-gray-400 mt-1">Clique para adicionar o primeiro.</p></div>`;
             }
             html += `</div>`;
             container.innerHTML = html;
         }
-        
+
         function renderDashboard(container) {
-            container.innerHTML = `
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="bg-white p-6 rounded-lg shadow"><h3 class="text-sm font-medium text-gray-500">Vídeos Publicados</h3><p class="mt-1 text-3xl font-semibold text-gray-900" id="kpi-total-videos">0</p></div>
-                </div>
-                <div class="mt-8 bg-white p-6 rounded-lg shadow">
-                     <h3 class="text-lg font-medium text-gray-900 mb-4">Performance dos Canais (Views)</h3>
-                     <div class="h-96"><canvas id="channelsChart"></canvas></div>
-                </div>`;
-            
-            const publishedVideos = allVideos.filter(v => v.status === 'Publicado');
-            document.getElementById('kpi-total-videos').textContent = publishedVideos.length;
-            renderChannelsChart();
+            // A renderização do dashboard será simples por enquanto
+            container.innerHTML = `<div class="bg-white p-6 rounded-lg shadow"><h3 class="text-lg font-medium text-gray-900">Visão Geral</h3><p class="text-gray-600 mt-2">Os KPIs e gráficos detalhados serão adicionados numa fase posterior.</p></div>`;
         }
 
-        let channelsChartInstance;
-        function renderChannelsChart() {
-             const ctx = document.getElementById('channelsChart')?.getContext('2d');
-             if(!ctx) return;
-             if(channelsChartInstance) channelsChartInstance.destroy();
-             
-             const labels = channelCodes.map(getChannelName);
-             const data = channelCodes.map(code => 
-                allVideos.filter(v => v.id.startsWith(code) && v.status === 'Publicado').reduce((sum, v) => sum + (v.views24h || 0), 0)
-             );
-
-             channelsChartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: { labels, datasets: [{ label: 'Views (24h)', data, backgroundColor: 'rgba(79, 70, 229, 0.8)' }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
-            });
-        }
-        
-        // --- Ponto de Entrada da Aplicação ---
-        document.addEventListener('DOMContentLoaded', initializeApp);
+        // --- Ponto de Entrada ---
+        document.addEventListener('DOMContentLoaded', main);
     </script>
 </body>
 </html>
