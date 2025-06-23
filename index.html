@@ -61,58 +61,78 @@
         </div>
     </div>
     
-    <!-- Firebase SDKs -->
+    <!-- Firebase SDKs (carregados pelo Hosting) -->
     <script src="/__/firebase/10.12.2/firebase-app-compat.js"></script>
     <script src="/__/firebase/10.12.2/firebase-auth-compat.js"></script>
     <script src="/__/firebase/10.12.2/firebase-firestore-compat.js"></script>
     <script src="/__/firebase/init.js"></script>
 
     <script type="module">
-        // --- Estado Global e Inicialização ---
+        // --- Estado Global ---
         let db, auth, userId;
         let allVideos = [];
         const channelCodes = ['SG', 'UMC', 'OC', 'BD', 'FA'];
 
-        async function main() {
+        // --- Função Principal de Inicialização ---
+        async function initializeApp() {
             const loadingMessage = document.getElementById('loading-message');
             try {
+                // 1. Espera que o script de inicialização do Firebase Hosting carregue o objeto `firebase`
                 loadingMessage.textContent = "A inicializar o Firebase...";
-                await new Promise((resolve, reject) => {
-                    const checkInterval = setInterval(() => {
-                        if (window.firebase) {
-                            clearInterval(checkInterval);
-                            resolve();
-                        }
-                    }, 100);
-                    setTimeout(() => {
-                        clearInterval(checkInterval);
-                        reject(new Error("Firebase SDK não carregou a tempo."));
-                    }, 5000);
-                });
+                await waitForFirebase();
 
+                // 2. Inicializa os serviços
                 auth = firebase.auth();
                 db = firebase.firestore();
                 
+                // 3. Aguarda a autenticação
                 loadingMessage.textContent = "A autenticar utilizador...";
-                auth.onAuthStateChanged(user => {
-                    if (user) {
-                        userId = user.uid;
-                        loadingMessage.textContent = "A ligar ao banco de dados...";
-                        initializeDataListeners();
-                    }
-                });
+                const user = await authenticateUser();
+                userId = user.uid;
 
+                // 4. Inicializa os listeners de dados, só depois da autenticação
+                loadingMessage.textContent = "A ligar ao banco de dados...";
+                initializeDataListeners();
+                
+                // 5. Inicializa os listeners de UI, que já podem estar prontos
                 initializeUIListeners();
                 renderInitialLayout();
 
             } catch(error) {
                 console.error("Erro na inicialização:", error);
-                loadingMessage.innerHTML = `<span class="text-red-500 font-bold">Falha Crítica na Inicialização!</span><br>${error.message}`;
+                loadingMessage.innerHTML = `<span class="text-red-500 font-bold">Falha Crítica na Inicialização!</span><br><p class="text-sm mt-2">${error.message}</p>`;
             }
         }
 
+        // --- Funções Auxiliares de Inicialização ---
+        function waitForFirebase() {
+            return new Promise((resolve, reject) => {
+                const timeout = 5000; // 5 segundos de tempo limite
+                const checkInterval = setInterval(() => {
+                    if (window.firebase) {
+                        clearInterval(checkInterval);
+                        resolve();
+                    }
+                }, 100);
+                setTimeout(() => {
+                    clearInterval(checkInterval);
+                    reject(new Error("Firebase SDK não carregou a tempo. Verifique o console de rede."));
+                }, timeout);
+            });
+        }
+        
+        function authenticateUser() {
+            return new Promise((resolve, reject) => {
+                 auth.onAuthStateChanged(user => {
+                    if (user) {
+                        resolve(user);
+                    }
+                });
+                auth.signInAnonymously().catch(reject);
+            });
+        }
+        
         // --- Listeners de Dados e UI ---
-
         function initializeDataListeners() {
             if (!userId) return;
             const videoCollectionRef = db.collection('videos');
@@ -120,12 +140,12 @@
             videoCollectionRef.onSnapshot((snapshot) => {
                 allVideos = snapshot.docs.map(doc => ({...doc.data(), docId: doc.id}));
                 renderCurrentTab();
+                // Mostra o app e esconde o loading SÓ quando os dados chegam pela primeira vez
                 document.getElementById('loading-overlay').style.display = 'none';
                 document.getElementById('app-container').style.display = 'block';
-
             }, (error) => {
                 console.error("Erro ao buscar dados do Firestore: ", error);
-                document.getElementById('loading-message').innerHTML = `<span class="text-red-500 font-bold">Erro ao Ler Banco de Dados!</span><br>Verifique as regras de segurança e se a coleção 'videos' foi criada no Firestore.`;
+                document.getElementById('loading-message').innerHTML = `<span class="text-red-500 font-bold">Erro ao Ler Banco de Dados!</span><br><p class="text-sm mt-2">Verifique as regras de segurança e se a coleção 'videos' foi criada no Firestore.</p>`;
             });
         }
 
@@ -270,7 +290,8 @@
             });
         }
         
-        document.addEventListener('DOMContentLoaded', main);
+        // --- Ponto de Entrada da Aplicação ---
+        document.addEventListener('DOMContentLoaded', initializeApp);
     </script>
 </body>
 </html>
