@@ -14,3 +14,4 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_AVALANCHE_3F4AD }}'
           channelId: live
           projectId: avalanche-3f4ad
+          entryPoint: ./
