@@ -44,7 +44,7 @@
     
     <div id="loading-overlay" class="fixed inset-0 bg-gray-100 z-50 flex flex-col justify-center items-center text-center">
         <div class="loader"></div>
-        <p class="mt-4 text-gray-600" id="loading-message">A carregar e a autenticar...</p>
+        <p class="mt-4 text-gray-600" id="loading-message">A iniciar...</p>
     </div>
 
     <!-- Modal para Adicionar Dossiê -->
@@ -72,9 +72,9 @@
         let db, auth, userId;
         let allVideos = [];
         const channelCodes = ['SG', 'UMC', 'OC', 'BD', 'FA'];
-        const loadingMessage = document.getElementById('loading-message');
 
         async function main() {
+            const loadingMessage = document.getElementById('loading-message');
             try {
                 loadingMessage.textContent = "A inicializar o Firebase...";
                 await new Promise((resolve, reject) => {
@@ -102,6 +102,7 @@
                     }
                 });
 
+                initializeUIListeners();
                 renderInitialLayout();
 
             } catch(error) {
@@ -124,7 +125,7 @@
 
             }, (error) => {
                 console.error("Erro ao buscar dados do Firestore: ", error);
-                loadingMessage.innerHTML = `<span class="text-red-500 font-bold">Erro ao Ler Banco de Dados!</span><br>Verifique as regras de segurança e se a coleção 'videos' foi criada no Firestore.`;
+                document.getElementById('loading-message').innerHTML = `<span class="text-red-500 font-bold">Erro ao Ler Banco de Dados!</span><br>Verifique as regras de segurança e se a coleção 'videos' foi criada no Firestore.`;
             });
         }
 
@@ -269,7 +270,7 @@
             });
         }
         
-        main();
+        document.addEventListener('DOMContentLoaded', main);
     </script>
 </body>
 </html>
