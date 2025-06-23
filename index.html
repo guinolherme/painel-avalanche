@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Controle: Operação Avalanche</title>
-    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
-    <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap)" rel="stylesheet">
-    <script src="[https://cdn.jsdelivr.net/npm/chart.js](https://cdn.jsdelivr.net/npm/chart.js)"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { font-family: 'Inter', sans-serif; }
         .tab-active { border-bottom-color: #4f46e5; color: #4f46e5; font-weight: 600; }
@@ -23,7 +23,7 @@
 </head>
 <body class="bg-gray-100">
 
-    <div id="status-overlay" class="fixed inset-0 z-50 flex flex-col justify-center items-center text-center bg-gray-100">
+    <div id="status-overlay" class="fixed inset-0 z-[100] flex flex-col justify-center items-center text-center bg-gray-100">
         <div id="loader" class="loader"></div>
         <p class="mt-4 text-gray-700" id="loading-message">Iniciando Conexão...</p>
     </div>
@@ -51,7 +51,7 @@
             <textarea id="json-payload-input" class="w-full h-56 p-2 border border-gray-300 rounded-md font-mono text-xs" placeholder='{"id": "...", "tituloOtimizado": "..."}'></textarea>
             <div id="json-error" class="text-red-600 text-sm mt-2 hidden"></div>
             <div class="mt-6 flex justify-end space-x-4">
-                <button data-action="close-dossier-modal" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">Cancelar</button>
+                <button data-action="close-modal" data-modal-id="dossier-modal" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">Cancelar</button>
                 <button data-action="save-dossier" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Salvar no Firebase</button>
             </div>
         </div>
@@ -59,7 +59,7 @@
     
     <!-- Modal de Detalhes do Dossiê -->
     <div id="detail-modal" class="modal-backdrop">
-        <div id="detail-modal-content" class="bg-white rounded-lg shadow-xl w-11/12 max-w-3xl p-6 modal-content overflow-y-auto">
+        <div id="detail-modal-content" class="bg-white rounded-lg shadow-xl w-11/12 max-w-3xl modal-content overflow-y-auto">
             <!-- Conteúdo será injetado aqui -->
         </div>
     </div>
@@ -107,31 +107,26 @@
         };
 
         // --- Lógica Principal ---
-        async function main() {
-            try {
-                await new Promise((resolve, reject) => {
-                    const timeout = setTimeout(() => reject(new Error("Firebase SDK não carregou.")), 5000);
-                    const interval = setInterval(() => {
-                        if (window.firebase) { clearInterval(interval); clearTimeout(timeout); resolve(); }
-                    }, 100);
-                });
+        function main() {
+            document.addEventListener('firebase-initialized', async () => {
+                try {
+                    setStatus("Firebase SDK carregado. A autenticar...");
+                    auth = firebase.auth();
+                    db = firebase.firestore();
+                    
+                    await auth.signInAnonymously();
+                    if (!auth.currentUser) throw new Error("Falha na autenticação anónima.");
+                    
+                    setStatus("Autenticado. A carregar dados...");
+                    initializeDataListeners();
+                    initializeUIListeners();
+                    renderInitialLayout();
 
-                setStatus("Firebase SDK carregado. A autenticar...");
-                auth = firebase.auth();
-                db = firebase.firestore();
-                
-                await auth.signInAnonymously();
-                if (!auth.currentUser) throw new Error("Falha na autenticação anónima.");
-                
-                setStatus("Autenticado. A carregar dados...");
-                initializeDataListeners();
-                initializeUIListeners();
-                renderInitialLayout();
-
-            } catch (error) {
-                console.error("Falha Crítica na Inicialização:", error);
-                setStatus(`Erro: ${error.message}`, true);
-            }
+                } catch (error) {
+                    console.error("Falha Crítica na Inicialização:", error);
+                    setStatus(`Erro: ${error.message}`, true);
+                }
+            });
         }
 
         // --- Listeners (Dados e UI) ---
@@ -171,30 +166,12 @@
                     DOM.jsonError.classList.add('hidden');
                     DOM.dossierModal.classList.add('flex');
                     break;
-                case 'close-dossier-modal':
-                    DOM.dossierModal.classList.remove('flex');
+                case 'close-modal':
+                    const modalToClose = document.getElementById(target.dataset.modalId);
+                    if(modalToClose) modalToClose.classList.remove('flex');
                     break;
                 case 'save-dossier':
-                    const saveButton = target;
-                    saveButton.disabled = true;
-                    saveButton.textContent = 'A salvar...';
-                    try {
-                        const channel = DOM.dossierModal.dataset.currentChannel;
-                        const data = JSON.parse(DOM.jsonPayloadInput.value);
-
-                        if (!data.id || !data.tituloOtimizado) throw new Error("JSON precisa ter 'id' e 'tituloOtimizado'.");
-                        if (!data.id.startsWith(channel)) throw new Error(`O ID "${data.id}" não pertence ao canal correto.`);
-
-                        const docRef = db.collection("videos").doc(data.id);
-                        await docRef.set({ ...data, createdAt: firebase.firestore.FieldValue.serverTimestamp(), status: 'Para Produzir' });
-                        DOM.dossierModal.classList.remove('flex');
-                    } catch (err) {
-                        DOM.jsonError.textContent = `Erro: ${err.message}`;
-                        DOM.jsonError.classList.remove('hidden');
-                    } finally {
-                        saveButton.disabled = false;
-                        saveButton.textContent = 'Salvar no Firebase';
-                    }
+                    await saveDossier(target);
                     break;
                 case 'view-dossier':
                     const video = allVideos.find(v => v.id === videoId);
@@ -203,9 +180,44 @@
                         DOM.detailModal.classList.add('flex');
                     }
                     break;
-                case 'close-detail-modal':
-                    DOM.detailModal.classList.remove('flex');
+                case 'delete-dossier':
+                    if (target.dataset.confirm === 'true') {
+                        await db.collection("videos").doc(videoId).delete();
+                    } else {
+                        document.querySelectorAll('[data-confirm="true"]').forEach(btn => {
+                             btn.dataset.confirm = 'false';
+                             btn.innerHTML = '&times;';
+                             btn.classList.remove('bg-red-600', 'hover:bg-red-700', 'w-24');
+                             btn.classList.add('bg-gray-300', 'hover:bg-gray-400');
+                        });
+                        target.dataset.confirm = 'true';
+                        target.textContent = 'Remover?';
+                        target.classList.remove('bg-gray-300', 'hover:bg-gray-400');
+                        target.classList.add('bg-red-600', 'hover:bg-red-700', 'w-24');
+                    }
                     break;
+            }
+        }
+        
+        async function saveDossier(saveButton) {
+            saveButton.disabled = true;
+            saveButton.textContent = 'A salvar...';
+            try {
+                const channel = DOM.dossierModal.dataset.currentChannel;
+                const data = JSON.parse(DOM.jsonPayloadInput.value);
+
+                if (!data.id || !data.tituloOtimizado) throw new Error("JSON precisa ter 'id' e 'tituloOtimizado'.");
+                if (!data.id.startsWith(channel)) throw new Error(`O ID "${data.id}" não pertence ao canal correto.`);
+
+                const docRef = db.collection("videos").doc(data.id);
+                await docRef.set({ ...data, createdAt: firebase.firestore.FieldValue.serverTimestamp(), status: 'Para Produzir' });
+                DOM.dossierModal.classList.remove('flex');
+            } catch (err) {
+                DOM.jsonError.textContent = `Erro: ${err.message}`;
+                DOM.jsonError.classList.remove('hidden');
+            } finally {
+                saveButton.disabled = false;
+                saveButton.textContent = 'Salvar no Firebase';
             }
         }
         
@@ -243,9 +255,12 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     ${channelVideos.length > 0 ? 
                         channelVideos.map(video => `
-                        <div data-action="view-dossier" data-video-id="${video.id}" class="bg-white p-5 rounded-lg shadow hover:shadow-lg transition-shadow cursor-pointer">
-                            <h3 class="font-bold text-gray-900 truncate pointer-events-none">${video.tituloOtimizado}</h3>
-                            <p class="text-sm text-gray-500 mt-1 pointer-events-none">${video.id}</p>
+                        <div class="bg-white p-5 rounded-lg shadow group relative">
+                            <button data-action="delete-dossier" data-video-id="${video.docId}" class="absolute top-2 right-2 h-6 w-6 rounded-full bg-gray-300 text-white text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500">&times;</button>
+                            <div data-action="view-dossier" data-video-id="${video.id}" class="cursor-pointer">
+                                <h3 class="font-bold text-gray-900 truncate pointer-events-none">${video.tituloOtimizado}</h3>
+                                <p class="text-sm text-gray-500 mt-1 pointer-events-none">${video.id}</p>
+                            </div>
                         </div>`).join('') :
                         `<div class="col-span-full text-center py-10 bg-white rounded-lg shadow"><p class="text-gray-500">Nenhum dossiê para este canal.</p><p class="text-sm text-gray-400 mt-1">Clique para adicionar o primeiro.</p></div>`
                     }
@@ -259,9 +274,10 @@
 
         function renderDetailModal(video) {
             const content = `
+             <div class="p-6">
                 <div class="flex justify-between items-start">
                     <h2 class="text-xl font-bold text-gray-900 mb-4">${video.tituloOtimizado} (${video.id})</h2>
-                    <button data-action="close-detail-modal" class="text-gray-500 hover:text-gray-800 text-3xl">&times;</button>
+                    <button data-action="close-modal" data-modal-id="detail-modal" class="text-gray-500 hover:text-gray-800 text-3xl">&times;</button>
                 </div>
                 <div class="space-y-4 text-sm">
                     <div>
@@ -280,12 +296,14 @@
                         <h3 class="font-semibold text-gray-700">Detalhes</h3>
                         <p class="mt-1 p-3 bg-gray-50 rounded-md"><strong>Hashtags:</strong> ${video.hashtags || 'N/A'}</p>
                     </div>
-                </div>`;
+                </div>
+            </div>`;
             DOM.detailModalContent.innerHTML = content;
         }
 
         // --- Ponto de Entrada ---
-        document.addEventListener('DOMContentLoaded', main);
+        main();
     </script>
 </body>
 </html>
+```
