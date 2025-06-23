@@ -95,8 +95,9 @@
 
         // --- Funções de Estado da UI ---
         const setStatus = (message, isError = false) => {
+            if (!DOM.loadingMessage) return;
             DOM.loadingMessage.textContent = message;
-            DOM.loader.style.display = isError ? 'none' : 'block';
+            if (DOM.loader) DOM.loader.style.display = isError ? 'none' : 'block';
             DOM.loadingMessage.classList.toggle('text-red-600', isError);
             DOM.loadingMessage.classList.toggle('font-semibold', isError);
         };
@@ -134,7 +135,7 @@
             const videosRef = db.collection('videos');
             videosRef.onSnapshot(snapshot => {
                 allVideos = snapshot.docs.map(doc => ({ ...doc.data(), docId: doc.id }));
-                if(document.getElementById('app-container').style.display === 'block') {
+                if(DOM.appContainer.style.display === 'block') {
                     renderCurrentTab();
                 }
                 showApp();
@@ -269,9 +270,66 @@
         }
 
         function renderDashboard(container) {
-            container.innerHTML = `<div class="bg-white p-6 rounded-lg shadow"><h3 class="text-lg font-medium text-gray-900">Visão Geral</h3><p class="text-gray-600 mt-2">Os KPIs e gráficos detalhados serão adicionados numa fase posterior, após a coleta de dados de performance dos vídeos publicados.</p></div>`;
+            container.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-lg shadow"><h3 class="text-sm font-medium text-gray-500">Vídeos Publicados</h3><p class="mt-1 text-3xl font-semibold text-gray-900" id="kpi-total-videos">0</p></div>
+                    <div class="bg-white p-6 rounded-lg shadow"><h3 class="text-sm font-medium text-gray-500">Views Totais (24h)</h3><p class="mt-1 text-3xl font-semibold text-gray-900" id="kpi-total-views">0</p></div>
+                    <div class="bg-white p-6 rounded-lg shadow"><h3 class="text-sm font-medium text-gray-500">Novos Seguidores</h3><p class="mt-1 text-3xl font-semibold text-gray-900" id="kpi-total-followers">0</p></div>
+                    <div class="bg-white p-6 rounded-lg shadow"><h3 class="text-sm font-medium text-gray-500">QV Médio</h3><p class="mt-1 text-3xl font-semibold text-gray-900" id="kpi-avg-qv">0.00</p></div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                     <h3 class="text-lg font-medium text-gray-900 mb-4">Performance dos Canais (Views)</h3>
+                     <div class="relative h-96"><canvas id="channelsChart"></canvas></div>
+                </div>`;
+            updateDashboardKPIs();
         }
 
+        function updateDashboardKPIs() {
+            const kpiVideos = document.getElementById('kpi-total-videos');
+            const kpiViews = document.getElementById('kpi-total-views');
+            const kpiFollowers = document.getElementById('kpi-total-followers');
+            const kpiQv = document.getElementById('kpi-avg-qv');
+
+            if (!kpiVideos) return; // Guard clause
+
+            const publishedVideos = allVideos.filter(v => v.status === 'Publicado');
+            kpiVideos.textContent = publishedVideos.length;
+            
+            const totalViews = publishedVideos.reduce((sum, v) => sum + (v.views24h || 0), 0);
+            kpiViews.textContent = totalViews.toLocaleString('pt-BR');
+            
+            const totalFollowers = publishedVideos.reduce((sum, v) => sum + (v.novosSeguidores || 0), 0);
+            kpiFollowers.textContent = totalFollowers.toLocaleString('pt-BR');
+
+            const videosWithQv = publishedVideos.filter(v => (v.shares && v.comments && v.views24h));
+            if (videosWithQv.length > 0) {
+                const totalQv = videosWithQv.reduce((sum, v) => sum + (((v.shares + v.comments) / v.views24h) * 1000), 0);
+                kpiQv.textContent = (totalQv / videosWithQv.length).toFixed(2);
+            } else {
+                kpiQv.textContent = '0.00';
+            }
+
+            renderChannelsChart();
+        }
+
+        let channelsChartInstance;
+        function renderChannelsChart() {
+             const ctx = document.getElementById('channelsChart')?.getContext('2d');
+             if(!ctx) return;
+             if(channelsChartInstance) channelsChartInstance.destroy();
+             
+             const labels = channelCodes.map(getChannelName);
+             const data = channelCodes.map(code => 
+                allVideos.filter(v => v.id && v.id.startsWith(code) && v.status === 'Publicado').reduce((sum, v) => sum + (v.views24h || 0), 0)
+             );
+
+             channelsChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: { labels, datasets: [{ label: 'Views (24h)', data, backgroundColor: 'rgba(79, 70, 229, 0.8)' }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+            });
+        }
+        
         function renderDetailModal(video) {
             const content = `
              <div class="p-6">
