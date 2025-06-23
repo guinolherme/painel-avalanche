@@ -295,16 +295,22 @@
             });
         }
         
-        function showModal(content) {
-            const modalContentWrapper = document.getElementById('modal-content-wrapper');
-            modalContentWrapper.innerHTML = content;
-            document.getElementById('video-modal').classList.remove('hidden');
+        function showModal(id, content) {
+            const modal = document.getElementById(id);
+            if(id === 'video-modal') {
+                const wrapper = document.getElementById('modal-content-wrapper');
+                wrapper.innerHTML = content;
+            }
+            modal.classList.remove('hidden');
         }
 
-        function closeModal() {
-            document.getElementById('video-modal').classList.add('hidden');
-            const modalContentWrapper = document.getElementById('modal-content-wrapper');
-            modalContentWrapper.innerHTML = '';
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.add('hidden');
+             if(id === 'video-modal') {
+                const wrapper = document.getElementById('modal-content-wrapper');
+                wrapper.innerHTML = '';
+            }
         }
 
         function renderModalContent(video) {
@@ -370,6 +376,8 @@
                 allVideos = snapshot.docs.map(doc => ({...doc.data(), docId: doc.id}));
                 renderAllChannels();
                 renderDashboard();
+            }, (error) => {
+                console.error("Erro ao buscar dados do Firestore: ", error);
             });
         }
         
@@ -389,40 +397,81 @@
                 document.getElementById(`${tab}-content`).classList.remove('hidden');
             }
         });
-
-        document.getElementById('tab-content').addEventListener('click', (e) => {
-            const card = e.target.closest('.video-card');
-            if (card) {
-                const videoId = card.dataset.videoId;
+        
+        // **CORREÇÃO: Listener de clique unificado no corpo do documento**
+        document.addEventListener('click', async (e) => {
+            // Abrir modal de detalhes do vídeo
+            const videoCard = e.target.closest('.video-card');
+            if(videoCard) {
+                const videoId = videoCard.dataset.videoId;
                 const video = allVideos.find(v => v.id === videoId);
                 if (video) {
-                    showModal(renderModalContent(video));
+                    showModal('video-modal', renderModalContent(video));
                 }
                 return;
             }
-            
-            const addButton = e.target.closest('.add-dossier-button');
-            if(addButton) {
-                const channelCode = addButton.dataset.channelCode;
+
+            // Abrir modal para adicionar dossiê
+            const addDossierButton = e.target.closest('.add-dossier-button');
+            if(addDossierButton) {
                 const dossierModal = document.getElementById('dossier-modal');
-                dossierModal.dataset.currentChannel = channelCode;
-                dossierModal.classList.remove('hidden');
+                dossierModal.dataset.currentChannel = addDossierButton.dataset.channelCode;
+                showModal('dossier-modal');
                 document.getElementById('json-payload-input').value = '';
                 document.getElementById('json-error').classList.add('hidden');
-            }
-        });
-        
-        document.getElementById('video-modal').addEventListener('click', async (e) => {
-            if (e.target.id === 'close-modal-button' || e.target.closest('#close-modal-button') || e.target.classList.contains('modal-backdrop')) {
-                closeModal();
                 return;
             }
 
+            // Fechar modal de detalhes
+            const closeModalButton = e.target.closest('#close-modal-button');
+            if(closeModalButton) {
+                closeModal('video-modal');
+                return;
+            }
+            
+            // Fechar qualquer modal clicando no fundo
+            if(e.target.classList.contains('modal-backdrop')) {
+                closeModal(e.target.id);
+                return;
+            }
+            
+            // Botão Cancelar do modal de dossiê
+            const cancelDossierButton = e.target.closest('#cancel-dossier-button');
+            if (cancelDossierButton) {
+                closeModal('dossier-modal');
+                return;
+            }
+
+            // Botão Salvar do modal de dossiê
+            const saveDossierButton = e.target.closest('#save-dossier-button');
+            if (saveDossierButton) {
+                const jsonInput = document.getElementById('json-payload-input').value;
+                const errorDiv = document.getElementById('json-error');
+                const channelCode = document.getElementById('dossier-modal').dataset.currentChannel;
+                
+                try {
+                    const data = JSON.parse(jsonInput);
+                    if (!data.id || !data.tituloOtimizado) throw new Error("O JSON precisa ter 'id' e 'tituloOtimizado'.");
+                    if (!data.id.startsWith(channelCode)) throw new Error(`O ID "${data.id}" não pertence ao canal ${getChannelName(channelCode)}.`);
+                    
+                    const videoRef = doc(db, `artifacts/${appId}/public/data/videos`, data.id);
+                    await setDoc(videoRef, { ...data, createdAt: serverTimestamp(), views24h: 0, novosSeguidores: 0, qv: 0 });
+                    
+                    closeModal('dossier-modal');
+                    errorDiv.classList.add('hidden');
+                } catch (err) {
+                    errorDiv.textContent = `Erro: ${err.message}`;
+                    errorDiv.classList.remove('hidden');
+                }
+                return;
+            }
+
+            // Ações do Gemini dentro do modal de detalhes
             const geminiButton = e.target.closest('.gemini-action-button');
             if (geminiButton) {
-                const videoId = geminiButton.dataset.docId;
+                const docId = geminiButton.dataset.docId;
                 const field = geminiButton.dataset.field;
-                const video = allVideos.find(v => v.docId === videoId);
+                const video = allVideos.find(v => v.docId === docId);
                 
                 const container = document.getElementById('gemini-output-container');
                 const loader = document.getElementById('gemini-loader');
@@ -440,7 +489,7 @@
                 } else if (field === 'roteiro') {
                     prompt = `Expanda este roteiro para um vídeo de ~25 segundos, mantendo a essência, mas adicionando mais detalhes e uma narração mais fluida. Roteiro base: "${video.roteiro}"`;
                 } else if (field === 'prompt') {
-                    prompt = `Otimize estes prompts de IA para gerar imagens cinematográficas e visualmente impressionantes. Mantenha o conceito, mas melhore a direção de arte. Prompts base: CENA 1: ${video.promptCena1}, CENA 2: ${video.promptCena2}`;
+                    prompt = `Otimize estes prompts de IA para gerar imagens cinematográficas e visualmente impressionantes. Mantenha o conceito, mas melhore a direção de arte. Prompts base: CENA 1: ${video.promptCena1}, CENA 2: ${video.promptCena2 || ''}`;
                 }
 
                 const result = await callGeminiAPI(prompt);
@@ -449,82 +498,35 @@
                 outputDiv.textContent = result;
                 
                 const saveButton = document.getElementById('save-gemini-output');
-                saveButton.dataset.docId = videoId;
+                saveButton.dataset.docId = docId;
                 saveButton.dataset.field = field;
                 saveButton.dataset.content = result;
                 actionButtons.classList.remove('hidden');
                 return;
             }
-            
+
             const saveGeminiButton = e.target.closest('#save-gemini-output');
             if (saveGeminiButton) {
-                const videoId = saveGeminiButton.dataset.docId;
+                const docId = saveGeminiButton.dataset.docId;
                 const field = saveGeminiButton.dataset.field;
                 const content = saveGeminiButton.dataset.content;
-                const videoRef = doc(db, `artifacts/${appId}/public/data/videos`, videoId);
-
-                let updateData = {};
-                // Para simplificar, vamos salvar a sugestão inteira em um campo de notas.
-                // O usuário pode copiar e colar manualmente se gostar.
+                const videoRef = doc(db, `artifacts/${appId}/public/data/videos`, docId);
+                
                 const fieldMap = {
                     'titulo': 'notas_titulo',
                     'roteiro': 'notas_roteiro',
                     'prompt': 'notas_prompt'
                 };
+                let updateData = {};
                 updateData[fieldMap[field]] = content;
                 
                 await updateDoc(videoRef, updateData);
                 document.getElementById('gemini-output-container').classList.add('hidden');
-            }
-        });
-        
-        // CORREÇÃO: Listener para o modal de adicionar dossiê usando delegação de evento.
-        document.getElementById('dossier-modal').addEventListener('click', async (e) => {
-            // Fecha o modal se clicar no backdrop
-            if (e.target.id === 'dossier-modal') {
-                e.currentTarget.classList.add('hidden');
-                return;
-            }
-            
-            // Botão Cancelar
-            const cancelButton = e.target.closest('#cancel-dossier-button');
-            if (cancelButton) {
-                e.currentTarget.classList.add('hidden');
-                return;
-            }
-
-            // Botão Salvar
-            const saveButton = e.target.closest('#save-dossier-button');
-            if (saveButton) {
-                const jsonInput = document.getElementById('json-payload-input').value;
-                const errorDiv = document.getElementById('json-error');
-                const channelCode = e.currentTarget.dataset.currentChannel;
-
-                try {
-                    const data = JSON.parse(jsonInput);
-                    
-                    if (!data.id || !data.tituloOtimizado) {
-                        throw new Error("O JSON precisa ter pelo menos os campos 'id' e 'tituloOtimizado'.");
-                    }
-                    if (!data.id.startsWith(channelCode)) {
-                        throw new Error(`O ID "${data.id}" não pertence ao canal ${getChannelName(channelCode)}.`);
-                    }
-
-                    const videoRef = doc(db, `artifacts/${appId}/public/data/videos`, data.id);
-                    await setDoc(videoRef, { ...data, createdAt: serverTimestamp() });
-                    
-                    e.currentTarget.classList.add('hidden');
-                    errorDiv.classList.add('hidden');
-
-                } catch (err) {
-                    errorDiv.textContent = `Erro: ${err.message}`;
-                    errorDiv.classList.remove('hidden');
-                }
+                alert('Sugestão da IA salva como nota!');
             }
         });
 
     </script>
-
 </body>
 </html>
 ```
