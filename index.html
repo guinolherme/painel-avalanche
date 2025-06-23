@@ -1,553 +1,530 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.6">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #4689cc; -webkit-text-stroke: #4689cc}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #c27e65; -webkit-text-stroke: #c27e65}
-    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #8cd3fe; -webkit-text-stroke: #8cd3fe}
-    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #cacaca; -webkit-text-stroke: #cacaca}
-    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #cacaca; -webkit-text-stroke: #cacaca; min-height: 16.0px}
-    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #6d7378; -webkit-text-stroke: #6d7378}
-    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #71c083; -webkit-text-stroke: #71c083}
-    span.s1 {font-kerning: none; background-color: #171818}
-    span.s2 {font-kerning: none; color: #8cd3fe; background-color: #171818; -webkit-text-stroke: 0px #8cd3fe}
-    span.s3 {font-kerning: none; color: #6d6d6d; background-color: #171818; -webkit-text-stroke: 0px #6d6d6d}
-    span.s4 {font-kerning: none; color: #4689cc; background-color: #171818; -webkit-text-stroke: 0px #4689cc}
-    span.s5 {font-kerning: none; color: #cacaca; background-color: #171818; -webkit-text-stroke: 0px #cacaca}
-    span.s6 {font-kerning: none; color: #c27e65; background-color: #171818; -webkit-text-stroke: 0px #c27e65}
-    span.s7 {font-kerning: none; color: #d4d4d4; background-color: #171818; -webkit-text-stroke: 0px #d4d4d4}
-    span.s8 {font-kerning: none; color: #71c083; background-color: #171818; -webkit-text-stroke: 0px #71c083}
-    span.s9 {font-kerning: none; color: #a7c598; background-color: #171818; -webkit-text-stroke: 0px #a7c598}
-    span.s10 {font-kerning: none; color: #b76ff7; background-color: #171818; -webkit-text-stroke: 0px #b76ff7}
-    span.s11 {font-kerning: none}
-    span.s12 {font-kerning: none; color: #36c0a0; background-color: #171818; -webkit-text-stroke: 0px #36c0a0}
-    span.s13 {font-kerning: none; color: #f67c30; background-color: #171818; -webkit-text-stroke: 0px #f67c30}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Controle: Operação Avalanche</title>
+    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+    <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap)" rel="stylesheet">
+    <script src="[https://cdn.jsdelivr.net/npm/chart.js](https://cdn.jsdelivr.net/npm/chart.js)"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .tab-active { border-bottom-color: #4f46e5; color: #4f46e5; }
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+        }
+        .modal-content {
+            max-height: 90vh;
+        }
+         .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4f46e5;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
-<body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE</span><span class="s2"> html</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s3">&lt;</span><span class="s4">html</span><span class="s5"> </span><span class="s2">lang</span><span class="s3">=</span><span class="s1">"pt-BR"</span><span class="s3">&gt;</span></p>
-<p class="p1"><span class="s3">&lt;</span><span class="s1">head</span><span class="s3">&gt;</span></p>
-<p class="p3"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s4">meta</span><span class="s5"> </span><span class="s1">charset</span><span class="s3">=</span><span class="s6">"UTF-8"</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s4">meta</span><span class="s5"> </span><span class="s2">name</span><span class="s3">=</span><span class="s1">"viewport"</span><span class="s5"> </span><span class="s2">content</span><span class="s3">=</span><span class="s1">"width=device-width, initial-scale=1.0"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s4">title</span><span class="s3">&gt;</span><span class="s1">Painel de Controle: Operação Avalanche</span><span class="s3">&lt;/</span><span class="s4">title</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s4">script</span><span class="s5"> </span><span class="s2">src</span><span class="s3">=</span><span class="s1">"[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"</span><span class="s3">&gt;&lt;/</span><span class="s4">script</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s4">link</span><span class="s5"> </span><span class="s2">href</span><span class="s3">=</span><span class="s1">"[https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap)"</span><span class="s5"> </span><span class="s2">rel</span><span class="s3">=</span><span class="s1">"stylesheet"</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s4">script</span><span class="s5"> </span><span class="s2">src</span><span class="s3">=</span><span class="s1">"[https://cdn.jsdelivr.net/npm/chart.js](https://cdn.jsdelivr.net/npm/chart.js)"</span><span class="s3">&gt;&lt;/</span><span class="s4">script</span><span class="s3">&gt;</span></p>
-<p class="p1"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s1">style</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s4">body</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> </span><span class="s2">font-family:</span><span class="s1"> </span><span class="s8">'Inter'</span><span class="s7">,</span><span class="s1"> </span><span class="s6">sans-serif</span><span class="s7">;</span><span class="s1"> </span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s4">.tab-active</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> </span><span class="s2">border-bottom-color:</span><span class="s1"> #4f46e5</span><span class="s7">;</span><span class="s1"> </span><span class="s2">color:</span><span class="s1"> #4f46e5</span><span class="s7">;</span><span class="s1"> </span><span class="s7">}</span></p>
-<p class="p1"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s1">.modal-backdrop</span><span class="s5"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">position:</span><span class="s1"> </span><span class="s6">fixed</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">top:</span><span class="s1"> </span><span class="s9">0</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">left:</span><span class="s1"> </span><span class="s9">0</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">width:</span><span class="s1"> </span><span class="s9">100%</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">height:</span><span class="s1"> </span><span class="s9">100%</span><span class="s7">;</span></p>
-<p class="p3"><span class="s5"><span class="Apple-converted-space">            </span></span><span class="s1">background-color:</span><span class="s5"> </span><span class="s6">rgba(</span><span class="s9">0</span><span class="s7">,</span><span class="s5"> </span><span class="s9">0</span><span class="s7">,</span><span class="s5"> </span><span class="s9">0</span><span class="s7">,</span><span class="s5"> </span><span class="s9">0.5</span><span class="s6">)</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">display:</span><span class="s1"> </span><span class="s6">flex</span><span class="s7">;</span></p>
-<p class="p3"><span class="s5"><span class="Apple-converted-space">            </span></span><span class="s1">justify-content:</span><span class="s5"> </span><span class="s6">center</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">align-items:</span><span class="s1"> </span><span class="s6">center</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">z-index:</span><span class="s1"> </span><span class="s9">50</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s1">.modal-content</span><span class="s5"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">max-height:</span><span class="s1"> </span><span class="s9">90vh</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">         </span></span><span class="s4">.loader</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">border:</span><span class="s1"> </span><span class="s9">4px</span><span class="s1"> </span><span class="s6">solid</span><span class="s1"> #f3f3f3</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">border-top:</span><span class="s1"> </span><span class="s9">4px</span><span class="s1"> </span><span class="s6">solid</span><span class="s1"> #4f46e5</span><span class="s7">;</span></p>
-<p class="p3"><span class="s5"><span class="Apple-converted-space">            </span></span><span class="s1">border-radius:</span><span class="s5"> </span><span class="s9">50%</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">width:</span><span class="s1"> </span><span class="s9">40px</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s2">height:</span><span class="s1"> </span><span class="s9">40px</span><span class="s7">;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">            </span></span><span class="s2">animation:</span><span class="s5"> </span><span class="s1">spin</span><span class="s5"> </span><span class="s9">1s</span><span class="s5"> </span><span class="s1">linear</span><span class="s5"> </span><span class="s1">infinite</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s10">@keyframes</span><span class="s1"> </span><span class="s6">spin</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">0%</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> </span><span class="s2">transform:</span><span class="s1"> </span><span class="s6">rotate(</span><span class="s9">0deg</span><span class="s6">)</span><span class="s7">;</span><span class="s1"> </span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s9">100%</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> </span><span class="s2">transform:</span><span class="s1"> </span><span class="s6">rotate(</span><span class="s9">360deg</span><span class="s6">)</span><span class="s7">;</span><span class="s1"> </span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p1"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;/</span><span class="s1">style</span><span class="s3">&gt;</span></p>
-<p class="p1"><span class="s3">&lt;/</span><span class="s1">head</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s3">&lt;</span><span class="s4">body</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"bg-gray-50 text-gray-800"</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s4">div</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"container mx-auto p-4 md:p-6 lg:p-8"</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;</span><span class="s4">header</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s6">"mb-8"</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s4">h1</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"text-3xl md:text-4xl font-bold text-gray-900"</span><span class="s3">&gt;</span><span class="s5">Painel de Controle</span><span class="s3">&lt;/</span><span class="s4">h1</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s4">p</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s6">"text-gray-600 mt-1"</span><span class="s3">&gt;</span><span class="s1">Operação Avalanche: Sprint 1</span><span class="s3">&lt;/</span><span class="s4">p</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;/</span><span class="s4">header</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s1">&lt;!-- Navegação por Abas --&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;</span><span class="s4">div</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"border-b border-gray-200 mb-6"</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s4">nav</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"-mb-px flex space-x-6"</span><span class="s5"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"tabs"</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s4">button</span><span class="s5"> </span><span class="s2">data-tab</span><span class="s3">=</span><span class="s1">"dashboard"</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-indigo-600 hover:border-gray-300 tab-active"</span><span class="s3">&gt;</span><span class="s5">Visão Geral</span><span class="s3">&lt;/</span><span class="s4">button</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s4">button</span><span class="s5"> </span><span class="s2">data-tab</span><span class="s3">=</span><span class="s1">"SG"</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-indigo-600 hover:border-gray-300"</span><span class="s3">&gt;</span><span class="s5">Surto Generativo</span><span class="s3">&lt;/</span><span class="s4">button</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s4">button</span><span class="s5"> </span><span class="s2">data-tab</span><span class="s3">=</span><span class="s1">"UMC"</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-indigo-600 hover:border-gray-300"</span><span class="s3">&gt;</span><span class="s5">Um Minuto de Conhecimento</span><span class="s3">&lt;/</span><span class="s4">button</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s4">button</span><span class="s5"> </span><span class="s2">data-tab</span><span class="s3">=</span><span class="s1">"OC"</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-indigo-600 hover:border-gray-300"</span><span class="s3">&gt;</span><span class="s5">Oásis Cotidiano</span><span class="s3">&lt;/</span><span class="s4">button</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s4">button</span><span class="s5"> </span><span class="s2">data-tab</span><span class="s3">=</span><span class="s1">"BD"</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-indigo-600 hover:border-gray-300"</span><span class="s3">&gt;</span><span class="s5">Bestiário Digital</span><span class="s3">&lt;/</span><span class="s4">button</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s4">button</span><span class="s5"> </span><span class="s2">data-tab</span><span class="s3">=</span><span class="s1">"FA"</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-indigo-600 hover:border-gray-300"</span><span class="s3">&gt;</span><span class="s5">Fábrica de Arrepios</span><span class="s3">&lt;/</span><span class="s4">button</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;/</span><span class="s4">nav</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;/</span><span class="s4">div</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s1">&lt;!-- Conteúdo das Abas --&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;</span><span class="s4">main</span><span class="s5"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"tab-content"</span><span class="s3">&gt;</span></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">            </span></span><span class="s1">&lt;!-- Aba de Visão Geral (Dashboard) --&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s4">div</span><span class="s5"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"dashboard-content"</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"tab-pane active"</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">                 </span></span><span class="s3">&lt;</span><span class="s4">div</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;</span><span class="s4">div</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"bg-white p-6 rounded-lg shadow"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span></span><span class="s3">&lt;</span><span class="s4">h3</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s6">"text-sm font-medium text-gray-500"</span><span class="s3">&gt;</span><span class="s1">Vídeos Publicados</span><span class="s3">&lt;/</span><span class="s4">h3</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">                        </span></span><span class="s3">&lt;</span><span class="s4">p</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"mt-1 text-3xl font-semibold text-gray-900"</span><span class="s5"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"kpi-total-videos"</span><span class="s3">&gt;</span><span class="s5">0</span><span class="s3">&lt;/</span><span class="s4">p</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;/</span><span class="s4">div</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">                     </span></span><span class="s3">&lt;</span><span class="s4">div</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"bg-white p-6 rounded-lg shadow"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span></span><span class="s3">&lt;</span><span class="s4">h3</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s6">"text-sm font-medium text-gray-500"</span><span class="s3">&gt;</span><span class="s1">Views (24h)</span><span class="s3">&lt;/</span><span class="s4">h3</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">                        </span></span><span class="s3">&lt;</span><span class="s4">p</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"mt-1 text-3xl font-semibold text-gray-900"</span><span class="s5"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"kpi-total-views"</span><span class="s3">&gt;</span><span class="s5">0</span><span class="s3">&lt;/</span><span class="s4">p</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;/</span><span class="s4">div</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">                     </span></span><span class="s3">&lt;</span><span class="s4">div</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"bg-white p-6 rounded-lg shadow"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span></span><span class="s3">&lt;</span><span class="s4">h3</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s6">"text-sm font-medium text-gray-500"</span><span class="s3">&gt;</span><span class="s1">Novos Seguidores</span><span class="s3">&lt;/</span><span class="s4">h3</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">                        </span></span><span class="s3">&lt;</span><span class="s4">p</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"mt-1 text-3xl font-semibold text-gray-900"</span><span class="s5"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"kpi-total-followers"</span><span class="s3">&gt;</span><span class="s5">0</span><span class="s3">&lt;/</span><span class="s4">p</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;/</span><span class="s4">div</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">                     </span></span><span class="s3">&lt;</span><span class="s4">div</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"bg-white p-6 rounded-lg shadow"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span></span><span class="s3">&lt;</span><span class="s4">h3</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s6">"text-sm font-medium text-gray-500"</span><span class="s3">&gt;</span><span class="s1">Quociente de Viralidade Médio</span><span class="s3">&lt;/</span><span class="s4">h3</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">                        </span></span><span class="s3">&lt;</span><span class="s4">p</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"mt-1 text-3xl font-semibold text-gray-900"</span><span class="s5"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"kpi-avg-qv"</span><span class="s3">&gt;</span><span class="s5">0.00</span><span class="s3">&lt;/</span><span class="s4">p</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s3">&lt;/</span><span class="s4">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;/</span><span class="s4">div</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s4">div</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"mt-8 bg-white p-6 rounded-lg shadow"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                     </span></span><span class="s3">&lt;</span><span class="s4">h3</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s6">"text-lg font-medium text-gray-900 mb-4"</span><span class="s3">&gt;</span><span class="s1">Performance dos Canais (Views)</span><span class="s3">&lt;/</span><span class="s4">h3</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                     </span></span><span class="s3">&lt;</span><span class="s4">div</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s6">"h-96"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span></span><span class="s3">&lt;</span><span class="s4">canvas</span><span class="s1"> </span><span class="s2">id</span><span class="s3">=</span><span class="s6">"channelsChart"</span><span class="s3">&gt;&lt;/</span><span class="s4">canvas</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                     </span></span><span class="s3">&lt;/</span><span class="s4">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;/</span><span class="s4">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;/</span><span class="s4">div</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">            </span></span><span class="s1">&lt;!-- Abas dos Canais (serão preenchidas dinamicamente) --&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s4">div</span><span class="s5"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"SG-content"</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"tab-pane hidden"</span><span class="s3">&gt;&lt;/</span><span class="s4">div</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s4">div</span><span class="s5"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"UMC-content"</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"tab-pane hidden"</span><span class="s3">&gt;&lt;/</span><span class="s4">div</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s4">div</span><span class="s5"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"OC-content"</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"tab-pane hidden"</span><span class="s3">&gt;&lt;/</span><span class="s4">div</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s4">div</span><span class="s5"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"BD-content"</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"tab-pane hidden"</span><span class="s3">&gt;&lt;/</span><span class="s4">div</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s4">div</span><span class="s5"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"FA-content"</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"tab-pane hidden"</span><span class="s3">&gt;&lt;/</span><span class="s4">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;/</span><span class="s4">main</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;/</span><span class="s4">div</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s1">&lt;!-- Modal para Detalhes do Vídeo --&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s4">div</span><span class="s5"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"video-modal"</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"modal-backdrop hidden"</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;</span><span class="s4">div</span><span class="s5"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"modal-content-wrapper"</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"bg-white rounded-lg shadow-xl w-11/12 max-w-4xl modal-content overflow-y-auto"</span><span class="s3">&gt;</span></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">            </span></span><span class="s1">&lt;!-- O conteúdo será injetado aqui --&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;/</span><span class="s4">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;/</span><span class="s4">div</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s1">&lt;!-- Modal para Adicionar Dossiê --&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s4">div</span><span class="s5"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"dossier-modal"</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"modal-backdrop hidden"</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;</span><span class="s4">div</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"bg-white rounded-lg shadow-xl w-11/12 max-w-2xl p-6"</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s4">h2</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s6">"text-xl font-bold mb-4"</span><span class="s3">&gt;</span><span class="s1">Adicionar Novo Dossiê</span><span class="s3">&lt;/</span><span class="s4">h2</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s4">p</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s6">"text-sm text-gray-600 mb-4"</span><span class="s3">&gt;</span><span class="s1">Cole o payload JSON fornecido para criar um novo vídeo para este canal.</span><span class="s3">&lt;/</span><span class="s4">p</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s4">textarea</span><span class="s5"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"json-payload-input"</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"w-full h-48 p-2 border border-gray-300 rounded-md font-mono text-sm"</span><span class="s5"> </span><span class="s2">placeholder</span><span class="s3">=</span><span class="s1">'{"id": "CANAL_00X", "status": "Para Produzir", ...}'</span><span class="s3">&gt;&lt;/</span><span class="s4">textarea</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s4">div</span><span class="s1"> </span><span class="s2">id</span><span class="s3">=</span><span class="s6">"json-error"</span><span class="s1"> </span><span class="s2">class</span><span class="s3">=</span><span class="s6">"text-red-500 text-sm mt-2 hidden"</span><span class="s3">&gt;</span><span class="s1">JSON inválido. Por favor, verifique o formato.</span><span class="s3">&lt;/</span><span class="s4">div</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;</span><span class="s4">div</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"mt-6 flex justify-end space-x-4"</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s4">button</span><span class="s5"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"cancel-dossier-button"</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300"</span><span class="s3">&gt;</span><span class="s5">Cancelar</span><span class="s3">&lt;/</span><span class="s4">button</span><span class="s3">&gt;</span></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">                </span></span><span class="s3">&lt;</span><span class="s4">button</span><span class="s5"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"save-dossier-button"</span><span class="s5"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"</span><span class="s3">&gt;</span><span class="s5">Salvar</span><span class="s3">&lt;/</span><span class="s4">button</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s3">&lt;/</span><span class="s4">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s3">&lt;/</span><span class="s4">div</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;/</span><span class="s4">div</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p2"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s4">script</span><span class="s5"> </span><span class="s2">type</span><span class="s3">=</span><span class="s1">"module"</span><span class="s3">&gt;</span></p>
-<p class="p7"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s10">import</span><span class="s5"> </span><span class="s7">{</span><span class="s5"> initializeApp </span><span class="s7">}</span><span class="s5"> </span><span class="s10">from</span><span class="s5"> </span><span class="s1">"[https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js](https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js)"</span><span class="s7">;</span></p>
-<p class="p7"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s10">import</span><span class="s5"> </span><span class="s7">{</span><span class="s5"> getAuth</span><span class="s7">,</span><span class="s5"> signInAnonymously</span><span class="s7">,</span><span class="s5"> onAuthStateChanged </span><span class="s7">}</span><span class="s5"> </span><span class="s10">from</span><span class="s5"> </span><span class="s1">"[https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js](https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js)"</span><span class="s7">;</span></p>
-<p class="p7"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s10">import</span><span class="s5"> </span><span class="s7">{</span><span class="s5"> getFirestore</span><span class="s7">,</span><span class="s5"> doc</span><span class="s7">,</span><span class="s5"> collection</span><span class="s7">,</span><span class="s5"> onSnapshot</span><span class="s7">,</span><span class="s5"> addDoc</span><span class="s7">,</span><span class="s5"> updateDoc</span><span class="s7">,</span><span class="s5"> setDoc</span><span class="s7">,</span><span class="s5"> serverTimestamp </span><span class="s7">}</span><span class="s5"> </span><span class="s10">from</span><span class="s5"> </span><span class="s1">"[https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js](https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js)"</span><span class="s7">;</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s1">// CONFIGURAÇÃO DO FIREBASE</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s10">const</span><span class="s1"> firebaseConfig </span><span class="s7">=</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>apiKey</span><span class="s7">:</span><span class="s1"> </span><span class="s8">"SUA_API_KEY"</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>authDomain</span><span class="s7">:</span><span class="s1"> </span><span class="s8">"SEU_AUTH_DOMAIN"</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>projectId</span><span class="s7">:</span><span class="s1"> </span><span class="s8">"SEU_PROJECT_ID"</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>storageBucket</span><span class="s7">:</span><span class="s1"> </span><span class="s8">"SEU_STORAGE_BUCKET"</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>messagingSenderId</span><span class="s7">:</span><span class="s1"> </span><span class="s8">"SEU_MESSAGING_SENDER_ID"</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>appId</span><span class="s7">:</span><span class="s1"> </span><span class="s8">"SEU_APP_ID"</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">};</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s10">const</span><span class="s1"> app </span><span class="s7">=</span><span class="s1"> initializeApp</span><span class="s7">(</span><span class="s1">firebaseConfig</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s10">const</span><span class="s1"> auth </span><span class="s7">=</span><span class="s1"> getAuth</span><span class="s7">(</span><span class="s1">app</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s10">const</span><span class="s1"> db </span><span class="s7">=</span><span class="s1"> getFirestore</span><span class="s7">(</span><span class="s1">app</span><span class="s7">);</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s1">// VARIÁVEIS GLOBAIS</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s10">const</span><span class="s1"> appId </span><span class="s7">=</span><span class="s1"> </span><span class="s10">typeof</span><span class="s1"> __app_id </span><span class="s7">!==</span><span class="s1"> </span><span class="s8">'undefined'</span><span class="s1"> </span><span class="s7">?</span><span class="s1"> __app_id </span><span class="s7">:</span><span class="s1"> </span><span class="s8">'default-avalanche-app'</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s10">let</span><span class="s1"> userId </span><span class="s7">=</span><span class="s1"> </span><span class="s10">null</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s10">let</span><span class="s1"> allVideos </span><span class="s7">=</span><span class="s1"> </span><span class="s7">[];</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s1">// LÓGICA DE AUTENTICAÇÃO</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>onAuthStateChanged</span><span class="s7">(</span><span class="s1">auth</span><span class="s7">,</span><span class="s1"> </span><span class="s7">(</span><span class="s1">user</span><span class="s7">)</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">user</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>userId </span><span class="s7">=</span><span class="s1"> user</span><span class="s7">.</span><span class="s1">uid</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>initializeDataListeners</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span><span class="s1"> </span><span class="s10">else</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>signInAnonymously</span><span class="s7">(</span><span class="s1">auth</span><span class="s7">).</span><span class="s10">catch</span><span class="s7">((</span><span class="s1">error</span><span class="s7">)</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>console</span><span class="s7">.</span><span class="s1">error</span><span class="s7">(</span><span class="s8">"Erro no login anônimo:"</span><span class="s7">,</span><span class="s1"> error</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">});</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">});</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s1">// FUNÇÕES DA API DO GEMINI</span></p>
-<p class="p7"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s10">async</span><span class="s5"> </span><span class="s10">function</span><span class="s5"> callGeminiAPI</span><span class="s7">(</span><span class="s5">prompt</span><span class="s7">,</span><span class="s5"> systemInstruction </span><span class="s7">=</span><span class="s5"> </span><span class="s1">"Você é um especialista em marketing viral para mídias sociais."</span><span class="s7">)</span><span class="s5"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s1"> model </span><span class="s7">=</span><span class="s1"> </span><span class="s8">"gemini-2.0-flash"</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s1"> chatHistory </span><span class="s7">=</span><span class="s1"> </span><span class="s7">[</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">{</span><span class="s1"> role</span><span class="s7">:</span><span class="s1"> </span><span class="s8">"system"</span><span class="s7">,</span><span class="s1"> parts</span><span class="s7">:</span><span class="s1"> </span><span class="s7">[{</span><span class="s1"> text</span><span class="s7">:</span><span class="s1"> systemInstruction </span><span class="s7">}]</span><span class="s1"> </span><span class="s7">},</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">{</span><span class="s1"> role</span><span class="s7">:</span><span class="s1"> </span><span class="s8">"user"</span><span class="s7">,</span><span class="s1"> parts</span><span class="s7">:</span><span class="s1"> </span><span class="s7">[{</span><span class="s1"> text</span><span class="s7">:</span><span class="s1"> prompt </span><span class="s7">}]</span><span class="s1"> </span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">];</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s1"> payload </span><span class="s7">=</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> contents</span><span class="s7">:</span><span class="s1"> chatHistory </span><span class="s7">};</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s1"> apiKey </span><span class="s7">=</span><span class="s1"> </span><span class="s8">""</span><span class="s7">;</span><span class="s1"><span class="Apple-converted-space"> </span></span></p>
-<p class="p7"><span class="s5"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s5"> apiUrl </span><span class="s7">=</span><span class="s5"> </span><span class="s1">`https://generativelanguage.googleapis.com/v1beta/models/</span><span class="s7">${</span><span class="s5">model</span><span class="s7">}</span><span class="s1">:generateContent?key=</span><span class="s7">${</span><span class="s5">apiKey</span><span class="s7">}</span><span class="s1">`</span><span class="s7">;</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">try</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> response </span><span class="s7">=</span><span class="s1"> </span><span class="s10">await</span><span class="s1"> fetch</span><span class="s7">(</span><span class="s1">apiUrl</span><span class="s7">,</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>method</span><span class="s7">:</span><span class="s1"> </span><span class="s8">'POST'</span><span class="s7">,</span></p>
-<p class="p7"><span class="s5"><span class="Apple-converted-space">                    </span>headers</span><span class="s7">:</span><span class="s5"> </span><span class="s7">{</span><span class="s5"> </span><span class="s1">'Content-Type'</span><span class="s7">:</span><span class="s5"> </span><span class="s1">'application/json'</span><span class="s5"> </span><span class="s7">},</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>body</span><span class="s7">:</span><span class="s1"> </span><span class="s12">JSON</span><span class="s7">.</span><span class="s1">stringify</span><span class="s7">(</span><span class="s1">payload</span><span class="s7">)</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">});</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> result </span><span class="s7">=</span><span class="s1"> </span><span class="s10">await</span><span class="s1"> response</span><span class="s7">.</span><span class="s1">json</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">result</span><span class="s7">.</span><span class="s1">candidates </span><span class="s7">&amp;&amp;</span><span class="s1"> result</span><span class="s7">.</span><span class="s1">candidates</span><span class="s7">[</span><span class="s13">0</span><span class="s7">]</span><span class="s1"> </span><span class="s7">&amp;&amp;</span><span class="s1"> result</span><span class="s7">.</span><span class="s1">candidates</span><span class="s7">[</span><span class="s13">0</span><span class="s7">].</span><span class="s1">content</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s10">return</span><span class="s1"> result</span><span class="s7">.</span><span class="s1">candidates</span><span class="s7">[</span><span class="s13">0</span><span class="s7">].</span><span class="s1">content</span><span class="s7">.</span><span class="s1">parts</span><span class="s7">[</span><span class="s13">0</span><span class="s7">].</span><span class="s1">text</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">}</span><span class="s1"> </span><span class="s10">else</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>console</span><span class="s7">.</span><span class="s1">error</span><span class="s7">(</span><span class="s8">"Resposta inesperada da API Gemini:"</span><span class="s7">,</span><span class="s1"> result</span><span class="s7">);</span></p>
-<p class="p7"><span class="s5"><span class="Apple-converted-space">                    </span></span><span class="s10">return</span><span class="s5"> </span><span class="s1">"Erro ao gerar resposta. Tente novamente."</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span><span class="s1"> </span><span class="s10">catch</span><span class="s1"> </span><span class="s7">(</span><span class="s1">error</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>console</span><span class="s7">.</span><span class="s1">error</span><span class="s7">(</span><span class="s8">"Erro ao chamar a API Gemini:"</span><span class="s7">,</span><span class="s1"> error</span><span class="s7">);</span></p>
-<p class="p7"><span class="s5"><span class="Apple-converted-space">                </span></span><span class="s10">return</span><span class="s5"> </span><span class="s1">"Erro de conexão com a API. Verifique o console."</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s1">// FUNÇÕES AUXILIARES E DE RENDERIZAÇÃO</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s10">function</span><span class="s1"> getChannelName</span><span class="s7">(</span><span class="s1">channelCode</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s1"> names </span><span class="s7">=</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p7"><span class="s5"><span class="Apple-converted-space">                </span></span><span class="s12">SG</span><span class="s7">:</span><span class="s5"> </span><span class="s1">'Surto Generativo'</span><span class="s7">,</span></p>
-<p class="p7"><span class="s5"><span class="Apple-converted-space">                </span></span><span class="s12">UMC</span><span class="s7">:</span><span class="s5"> </span><span class="s1">'Um Minuto de Conhecimento'</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s12">OC</span><span class="s7">:</span><span class="s1"> </span><span class="s8">'Oásis Cotidiano'</span><span class="s7">,</span></p>
-<p class="p7"><span class="s5"><span class="Apple-converted-space">                </span></span><span class="s12">BD</span><span class="s7">:</span><span class="s5"> </span><span class="s1">'Bestiário Digital'</span><span class="s7">,</span></p>
-<p class="p7"><span class="s5"><span class="Apple-converted-space">                </span></span><span class="s12">FA</span><span class="s7">:</span><span class="s5"> </span><span class="s1">'Fábrica de Arrepios'</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">};</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">return</span><span class="s1"> names</span><span class="s7">[</span><span class="s1">channelCode</span><span class="s7">]</span><span class="s1"> </span><span class="s7">||</span><span class="s1"> </span><span class="s8">'Desconhecido'</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s10">function</span><span class="s1"> renderChannelContent</span><span class="s7">(</span><span class="s1">channelCode</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s1"> contentDiv </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">`</span><span class="s7">${</span><span class="s1">channelCode</span><span class="s7">}</span><span class="s8">-content`</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s1"> channelVideos </span><span class="s7">=</span><span class="s1"> allVideos</span><span class="s7">.</span><span class="s1">filter</span><span class="s7">(</span><span class="s1">v </span><span class="s7">=&gt;</span><span class="s1"> v</span><span class="s7">.</span><span class="s1">id</span><span class="s7">.</span><span class="s1">startsWith</span><span class="s7">(</span><span class="s1">channelCode</span><span class="s7">));</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">let</span><span class="s1"> html </span><span class="s7">=</span><span class="s1"> </span><span class="s8">`</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="flex justify-between items-center mb-4"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;h2 class="text-2xl font-bold text-gray-800"&gt;</span><span class="s7">${</span><span class="s5">getChannelName</span><span class="s7">(</span><span class="s5">channelCode</span><span class="s7">)}</span><span class="s1">&lt;/h2&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;button data-channel-code="</span><span class="s7">${</span><span class="s5">channelCode</span><span class="s7">}</span><span class="s1">" class="add-dossier-button px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm font-medium"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>+ Adicionar Dossiê</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/button&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">            </span>`</span><span class="s7">;</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">channelVideos</span><span class="s7">.</span><span class="s1">length </span><span class="s7">===</span><span class="s1"> </span><span class="s13">0</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p7"><span class="s5"><span class="Apple-converted-space">                 </span>html </span><span class="s7">+=</span><span class="s5"> </span><span class="s1">`&lt;p class="text-gray-500 col-span-full"&gt;Nenhum dossiê encontrado para este canal.&lt;/p&gt;`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span><span class="s1"> </span><span class="s10">else</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>channelVideos</span><span class="s7">.</span><span class="s1">sort</span><span class="s7">((</span><span class="s1">a</span><span class="s7">,</span><span class="s1">b</span><span class="s7">)</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> a</span><span class="s7">.</span><span class="s1">id</span><span class="s7">.</span><span class="s1">localeCompare</span><span class="s7">(</span><span class="s1">b</span><span class="s7">.</span><span class="s1">id</span><span class="s7">)).</span><span class="s1">forEach</span><span class="s7">(</span><span class="s1">video </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>html </span><span class="s7">+=</span><span class="s1"> </span><span class="s8">`</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div class="bg-white p-5 rounded-lg shadow cursor-pointer hover:shadow-lg transition-shadow video-card" data-video-id="</span><span class="s7">${</span><span class="s5">video</span><span class="s7">.</span><span class="s5">id</span><span class="s7">}</span><span class="s1">"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;h3 class="font-bold text-gray-900 truncate"&gt;</span><span class="s7">${</span><span class="s5">video</span><span class="s7">.</span><span class="s5">tituloOtimizado</span><span class="s7">}</span><span class="s1">&lt;/h3&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="text-sm text-gray-500 mt-1"&gt;</span><span class="s7">${</span><span class="s5">video</span><span class="s7">.</span><span class="s5">id</span><span class="s7">}</span><span class="s1">&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span class="mt-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium </span><span class="s7">${</span><span class="s5">video</span><span class="s7">.</span><span class="s5">status </span><span class="s7">===</span><span class="s5"> </span><span class="s1">'Publicado'</span><span class="s5"> </span><span class="s7">?</span><span class="s5"> </span><span class="s1">'bg-green-100 text-green-800'</span><span class="s5"> </span><span class="s7">:</span><span class="s5"> </span><span class="s1">'bg-yellow-100 text-yellow-800'</span><span class="s7">}</span><span class="s1">"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                </span></span><span class="s7">${</span><span class="s5">video</span><span class="s7">.</span><span class="s5">status</span><span class="s7">}</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/span&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">});</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>html </span><span class="s7">+=</span><span class="s1"> </span><span class="s8">`&lt;/div&gt;`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>contentDiv</span><span class="s7">.</span><span class="s1">innerHTML </span><span class="s7">=</span><span class="s1"> html</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s10">function</span><span class="s1"> renderDashboard</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'kpi-total-videos'</span><span class="s7">).</span><span class="s1">textContent </span><span class="s7">=</span><span class="s1"> allVideos</span><span class="s7">.</span><span class="s1">filter</span><span class="s7">(</span><span class="s1">v </span><span class="s7">=&gt;</span><span class="s1"> v</span><span class="s7">.</span><span class="s1">status </span><span class="s7">===</span><span class="s1"> </span><span class="s8">'Publicado'</span><span class="s7">).</span><span class="s1">length</span><span class="s7">;</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s1"> totalViews </span><span class="s7">=</span><span class="s1"> allVideos</span><span class="s7">.</span><span class="s1">reduce</span><span class="s7">((</span><span class="s1">acc</span><span class="s7">,</span><span class="s1"> v</span><span class="s7">)</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> acc </span><span class="s7">+</span><span class="s1"> </span><span class="s7">(</span><span class="s1">v</span><span class="s7">.</span><span class="s1">views24h </span><span class="s7">||</span><span class="s1"> </span><span class="s13">0</span><span class="s7">),</span><span class="s1"> </span><span class="s13">0</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'kpi-total-views'</span><span class="s7">).</span><span class="s1">textContent </span><span class="s7">=</span><span class="s1"> totalViews</span><span class="s7">.</span><span class="s1">toLocaleString</span><span class="s7">(</span><span class="s8">'pt-BR'</span><span class="s7">);</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s1"> totalFollowers </span><span class="s7">=</span><span class="s1"> allVideos</span><span class="s7">.</span><span class="s1">reduce</span><span class="s7">((</span><span class="s1">acc</span><span class="s7">,</span><span class="s1"> v</span><span class="s7">)</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> acc </span><span class="s7">+</span><span class="s1"> </span><span class="s7">(</span><span class="s1">v</span><span class="s7">.</span><span class="s1">novosSeguidores </span><span class="s7">||</span><span class="s1"> </span><span class="s13">0</span><span class="s7">),</span><span class="s1"> </span><span class="s13">0</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'kpi-total-followers'</span><span class="s7">).</span><span class="s1">textContent </span><span class="s7">=</span><span class="s1"> totalFollowers</span><span class="s7">.</span><span class="s1">toLocaleString</span><span class="s7">(</span><span class="s8">'pt-BR'</span><span class="s7">);</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s1"> videosWithQv </span><span class="s7">=</span><span class="s1"> allVideos</span><span class="s7">.</span><span class="s1">filter</span><span class="s7">(</span><span class="s1">v </span><span class="s7">=&gt;</span><span class="s1"> v</span><span class="s7">.</span><span class="s1">qv </span><span class="s7">&gt;</span><span class="s1"> </span><span class="s13">0</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s1"> avgQv </span><span class="s7">=</span><span class="s1"> videosWithQv</span><span class="s7">.</span><span class="s1">length </span><span class="s7">&gt;</span><span class="s1"> </span><span class="s13">0</span><span class="s1"><span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">?</span><span class="s1"> </span><span class="s7">(</span><span class="s1">videosWithQv</span><span class="s7">.</span><span class="s1">reduce</span><span class="s7">((</span><span class="s1">acc</span><span class="s7">,</span><span class="s1"> v</span><span class="s7">)</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> acc </span><span class="s7">+</span><span class="s1"> v</span><span class="s7">.</span><span class="s1">qv</span><span class="s7">,</span><span class="s1"> </span><span class="s13">0</span><span class="s7">)</span><span class="s1"> </span><span class="s7">/</span><span class="s1"> videosWithQv</span><span class="s7">.</span><span class="s1">length</span><span class="s7">).</span><span class="s1">toFixed</span><span class="s7">(</span><span class="s13">2</span><span class="s7">)</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">:</span><span class="s1"> </span><span class="s8">'0.00'</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'kpi-avg-qv'</span><span class="s7">).</span><span class="s1">textContent </span><span class="s7">=</span><span class="s1"> avgQv</span><span class="s7">;</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>renderChannelsChart</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s10">let</span><span class="s1"> channelsChartInstance</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s10">function</span><span class="s1"> renderChannelsChart</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s1"> ctx </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'channelsChart'</span><span class="s7">).</span><span class="s1">getContext</span><span class="s7">(</span><span class="s8">'2d'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s1"> channelCodes </span><span class="s7">=</span><span class="s1"> </span><span class="s7">[</span><span class="s8">'SG'</span><span class="s7">,</span><span class="s1"> </span><span class="s8">'UMC'</span><span class="s7">,</span><span class="s1"> </span><span class="s8">'OC'</span><span class="s7">,</span><span class="s1"> </span><span class="s8">'BD'</span><span class="s7">,</span><span class="s1"> </span><span class="s8">'FA'</span><span class="s7">];</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s1"> labels </span><span class="s7">=</span><span class="s1"> channelCodes</span><span class="s7">.</span><span class="s1">map</span><span class="s7">(</span><span class="s1">getChannelName</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s1"> data </span><span class="s7">=</span><span class="s1"> channelCodes</span><span class="s7">.</span><span class="s1">map</span><span class="s7">(</span><span class="s1">code </span><span class="s7">=&gt;</span><span class="s1"><span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>allVideos</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s7">.</span><span class="s1">filter</span><span class="s7">(</span><span class="s1">v </span><span class="s7">=&gt;</span><span class="s1"> v</span><span class="s7">.</span><span class="s1">id</span><span class="s7">.</span><span class="s1">startsWith</span><span class="s7">(</span><span class="s1">code</span><span class="s7">))</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s7">.</span><span class="s1">reduce</span><span class="s7">((</span><span class="s1">acc</span><span class="s7">,</span><span class="s1"> v</span><span class="s7">)</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> acc </span><span class="s7">+</span><span class="s1"> </span><span class="s7">(</span><span class="s1">v</span><span class="s7">.</span><span class="s1">views24h </span><span class="s7">||</span><span class="s1"> </span><span class="s13">0</span><span class="s7">),</span><span class="s1"> </span><span class="s13">0</span><span class="s7">)</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">);</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">if</span><span class="s7">(</span><span class="s1">channelsChartInstance</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>channelsChartInstance</span><span class="s7">.</span><span class="s1">destroy</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>channelsChartInstance </span><span class="s7">=</span><span class="s1"> </span><span class="s10">new</span><span class="s1"> </span><span class="s12">Chart</span><span class="s7">(</span><span class="s1">ctx</span><span class="s7">,</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>type</span><span class="s7">:</span><span class="s1"> </span><span class="s8">'bar'</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>data</span><span class="s7">:</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>labels</span><span class="s7">:</span><span class="s1"> labels</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>datasets</span><span class="s7">:</span><span class="s1"> </span><span class="s7">[{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>label</span><span class="s7">:</span><span class="s1"> </span><span class="s8">'Views (24h)'</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>data</span><span class="s7">:</span><span class="s1"> data</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>backgroundColor</span><span class="s7">:</span><span class="s1"> </span><span class="s8">'rgba(79, 70, 229, 0.8)'</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>borderColor</span><span class="s7">:</span><span class="s1"> </span><span class="s8">'rgba(79, 70, 229, 1)'</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>borderWidth</span><span class="s7">:</span><span class="s1"> </span><span class="s13">1</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s7">}]</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">},</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>options</span><span class="s7">:</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>responsive</span><span class="s7">:</span><span class="s1"> </span><span class="s10">true</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>maintainAspectRatio</span><span class="s7">:</span><span class="s1"> </span><span class="s10">false</span><span class="s7">,</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>scales</span><span class="s7">:</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>y</span><span class="s7">:</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>beginAtZero</span><span class="s7">:</span><span class="s1"> </span><span class="s10">true</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s7">},</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>plugins</span><span class="s7">:</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span>legend</span><span class="s7">:</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                            </span>display</span><span class="s7">:</span><span class="s1"> </span><span class="s10">false</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                        </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">});</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s10">function</span><span class="s1"> showModal</span><span class="s7">(</span><span class="s1">content</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s1"> modalContentWrapper </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'modal-content-wrapper'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>modalContentWrapper</span><span class="s7">.</span><span class="s1">innerHTML </span><span class="s7">=</span><span class="s1"> content</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'video-modal'</span><span class="s7">).</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">remove</span><span class="s7">(</span><span class="s8">'hidden'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s10">function</span><span class="s1"> closeModal</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'video-modal'</span><span class="s7">).</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s8">'hidden'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s1"> modalContentWrapper </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'modal-content-wrapper'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>modalContentWrapper</span><span class="s7">.</span><span class="s1">innerHTML </span><span class="s7">=</span><span class="s1"> </span><span class="s8">''</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s10">function</span><span class="s1"> renderModalContent</span><span class="s7">(</span><span class="s1">video</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">return</span><span class="s1"> </span><span class="s8">`</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="p-6"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="flex justify-between items-start mb-4"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                           </span>&lt;h2 class="text-2xl font-bold text-gray-900"&gt;</span><span class="s7">${</span><span class="s5">video</span><span class="s7">.</span><span class="s5">tituloOtimizado</span><span class="s7">}</span><span class="s1">&lt;/h2&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                           </span>&lt;p class="text-sm text-gray-500"&gt;</span><span class="s7">${</span><span class="s5">video</span><span class="s7">.</span><span class="s5">id</span><span class="s7">}</span><span class="s1"> - </span><span class="s7">${</span><span class="s5">getChannelName</span><span class="s7">(</span><span class="s5">video</span><span class="s7">.</span><span class="s5">id</span><span class="s7">.</span><span class="s5">substring</span><span class="s7">(</span><span class="s13">0</span><span class="s7">,</span><span class="s13">2</span><span class="s7">))}</span><span class="s1">&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;button id="close-modal-button" class="text-gray-400 hover:text-gray-600"&gt;&amp;times;&lt;/button&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                     </span>&lt;div class="space-y-6"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;h3 class="font-semibold text-gray-800 border-b pb-2 mb-3"&gt;Estratégia&lt;/h3&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="text-sm text-gray-700"&gt;&lt;strong class="text-gray-600"&gt;Racional:&lt;/strong&gt; </span><span class="s7">${</span><span class="s5">video</span><span class="s7">.</span><span class="s5">racionalEstrategico</span><span class="s7">}</span><span class="s1">&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="text-sm text-gray-700 mt-1"&gt;&lt;strong class="text-gray-600"&gt;Gatilho Psicológico:&lt;/strong&gt; </span><span class="s7">${</span><span class="s5">video</span><span class="s7">.</span><span class="s5">gatilhoPsicologico</span><span class="s7">}</span><span class="s1">&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;h3 class="font-semibold text-gray-800 border-b pb-2 mb-3"&gt;Roteiro&lt;/h3&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div class="bg-gray-50 p-4 rounded-md text-sm text-gray-700 whitespace-pre-wrap" id="roteiro-content"&gt;</span><span class="s7">${</span><span class="s5">video</span><span class="s7">.</span><span class="s5">roteiro</span><span class="s7">}</span><span class="s1">&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div class="flex justify-end mt-2"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;button data-video-id="</span><span class="s7">${</span><span class="s5">video</span><span class="s7">.</span><span class="s5">docId</span><span class="s7">}</span><span class="s1">" data-field="roteiro" class="gemini-action-button text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-md hover:bg-indigo-200"&gt;✨ Expandir Roteiro&lt;/button&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;h3 class="font-semibold text-gray-800 border-b pb-2 mb-3"&gt;Títulos e Hashtags&lt;/h3&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div class="bg-gray-50 p-4 rounded-md text-sm text-gray-700" id="titulo-content"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;p&gt;&lt;strong&gt;Título:&lt;/strong&gt; </span><span class="s7">${</span><span class="s5">video</span><span class="s7">.</span><span class="s5">tituloOtimizado</span><span class="s7">}</span><span class="s1">&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;p class="mt-2"&gt;&lt;strong&gt;Hashtags:&lt;/strong&gt; </span><span class="s7">${</span><span class="s5">video</span><span class="s7">.</span><span class="s5">hashtags</span><span class="s7">}</span><span class="s1">&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div class="flex justify-end mt-2"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;button data-video-id="</span><span class="s7">${</span><span class="s5">video</span><span class="s7">.</span><span class="s5">docId</span><span class="s7">}</span><span class="s1">" data-field="titulo" class="gemini-action-button text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-md hover:bg-indigo-200"&gt;✨ Gerar Alternativas&lt;/button&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;h3 class="font-semibold text-gray-800 border-b pb-2 mb-3"&gt;Prompts de Cena (IA)&lt;/h3&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div class="bg-gray-50 p-4 rounded-md text-sm text-gray-700 font-mono" id="prompt-content"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;p&gt;&lt;strong&gt;CENA 1:&lt;/strong&gt; </span><span class="s7">${</span><span class="s5">video</span><span class="s7">.</span><span class="s5">promptCena1</span><span class="s7">}</span><span class="s1">&lt;/p&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                </span></span><span class="s7">${</span><span class="s5">video</span><span class="s7">.</span><span class="s5">promptCena2 </span><span class="s7">?</span><span class="s5"> </span><span class="s1">`&lt;p class="mt-2"&gt;&lt;strong&gt;CENA 2:&lt;/strong&gt; </span><span class="s7">${</span><span class="s5">video</span><span class="s7">.</span><span class="s5">promptCena2</span><span class="s7">}</span><span class="s1">&lt;/p&gt;`</span><span class="s5"> </span><span class="s7">:</span><span class="s5"> </span><span class="s1">''</span><span class="s7">}</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                             </span>&lt;div class="flex justify-end mt-2"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;button data-video-id="</span><span class="s7">${</span><span class="s5">video</span><span class="s7">.</span><span class="s5">docId</span><span class="s7">}</span><span class="s1">" data-field="prompt" class="gemini-action-button text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-md hover:bg-indigo-200"&gt;✨ Otimizar Prompts&lt;/button&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div id="gemini-output-container" class="hidden"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                             </span>&lt;h3 class="font-semibold text-gray-800 border-b pb-2 mb-3"&gt;Sugestão da IA&lt;/h3&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                             </span>&lt;div id="gemini-loader" class="loader mx-auto my-4"&gt;&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                             </span>&lt;div id="gemini-output" class="bg-indigo-50 p-4 rounded-md text-sm text-gray-800 whitespace-pre-wrap"&gt;&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                             </span>&lt;div id="gemini-action-buttons" class="flex justify-end mt-4 hidden"&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;button id="save-gemini-output" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm"&gt;Salvar Alteração&lt;/button&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                             </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p7"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s1">// FUNÇÃO DE INICIALIZAÇÃO E LISTENERS</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s10">function</span><span class="s1"> initializeDataListeners</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">if</span><span class="s1"> </span><span class="s7">(!</span><span class="s1">userId</span><span class="s7">)</span><span class="s1"> </span><span class="s10">return</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s1"> videoCollectionRef </span><span class="s7">=</span><span class="s1"> collection</span><span class="s7">(</span><span class="s1">db</span><span class="s7">,</span><span class="s1"> </span><span class="s8">`artifacts/</span><span class="s7">${</span><span class="s1">appId</span><span class="s7">}</span><span class="s8">/public/data/videos`</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span>onSnapshot</span><span class="s7">(</span><span class="s1">videoCollectionRef</span><span class="s7">,</span><span class="s1"> </span><span class="s7">(</span><span class="s1">snapshot</span><span class="s7">)</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>allVideos </span><span class="s7">=</span><span class="s1"> snapshot</span><span class="s7">.</span><span class="s1">docs</span><span class="s7">.</span><span class="s1">map</span><span class="s7">(</span><span class="s1">doc </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">({...</span><span class="s1">doc</span><span class="s7">.</span><span class="s1">data</span><span class="s7">(),</span><span class="s1"> docId</span><span class="s7">:</span><span class="s1"> doc</span><span class="s7">.</span><span class="s1">id</span><span class="s7">}));</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>renderAllChannels</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>renderDashboard</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">});</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s10">function</span><span class="s1"> renderAllChannels</span><span class="s7">()</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">             </span></span><span class="s10">const</span><span class="s1"> channelCodes </span><span class="s7">=</span><span class="s1"> </span><span class="s7">[</span><span class="s8">'SG'</span><span class="s7">,</span><span class="s1"> </span><span class="s8">'UMC'</span><span class="s7">,</span><span class="s1"> </span><span class="s8">'OC'</span><span class="s7">,</span><span class="s1"> </span><span class="s8">'BD'</span><span class="s7">,</span><span class="s1"> </span><span class="s8">'FA'</span><span class="s7">];</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">             </span>channelCodes</span><span class="s7">.</span><span class="s1">forEach</span><span class="s7">(</span><span class="s1">code </span><span class="s7">=&gt;</span><span class="s1"> renderChannelContent</span><span class="s7">(</span><span class="s1">code</span><span class="s7">));</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s1">// LISTENERS DE EVENTOS DE UI</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'tabs'</span><span class="s7">).</span><span class="s1">addEventListener</span><span class="s7">(</span><span class="s8">'click'</span><span class="s7">,</span><span class="s1"> </span><span class="s7">(</span><span class="s1">e</span><span class="s7">)</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">e</span><span class="s7">.</span><span class="s1">target</span><span class="s7">.</span><span class="s1">tagName </span><span class="s7">===</span><span class="s1"> </span><span class="s8">'BUTTON'</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> tab </span><span class="s7">=</span><span class="s1"> e</span><span class="s7">.</span><span class="s1">target</span><span class="s7">.</span><span class="s1">dataset</span><span class="s7">.</span><span class="s1">tab</span><span class="s7">;</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>document</span><span class="s7">.</span><span class="s1">querySelectorAll</span><span class="s7">(</span><span class="s8">'#tabs button'</span><span class="s7">).</span><span class="s1">forEach</span><span class="s7">(</span><span class="s1">b </span><span class="s7">=&gt;</span><span class="s1"> b</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">remove</span><span class="s7">(</span><span class="s8">'tab-active'</span><span class="s7">));</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>e</span><span class="s7">.</span><span class="s1">target</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s8">'tab-active'</span><span class="s7">);</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>document</span><span class="s7">.</span><span class="s1">querySelectorAll</span><span class="s7">(</span><span class="s8">'#tab-content .tab-pane'</span><span class="s7">).</span><span class="s1">forEach</span><span class="s7">(</span><span class="s1">p </span><span class="s7">=&gt;</span><span class="s1"> p</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s8">'hidden'</span><span class="s7">));</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">`</span><span class="s7">${</span><span class="s1">tab</span><span class="s7">}</span><span class="s8">-content`</span><span class="s7">).</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">remove</span><span class="s7">(</span><span class="s8">'hidden'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">});</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'tab-content'</span><span class="s7">).</span><span class="s1">addEventListener</span><span class="s7">(</span><span class="s8">'click'</span><span class="s7">,</span><span class="s1"> </span><span class="s7">(</span><span class="s1">e</span><span class="s7">)</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">             </span></span><span class="s1">// Listener para abrir modal de detalhes do vídeo</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s1"> card </span><span class="s7">=</span><span class="s1"> e</span><span class="s7">.</span><span class="s1">target</span><span class="s7">.</span><span class="s1">closest</span><span class="s7">(</span><span class="s8">'.video-card'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">card</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> videoId </span><span class="s7">=</span><span class="s1"> card</span><span class="s7">.</span><span class="s1">dataset</span><span class="s7">.</span><span class="s1">videoId</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> video </span><span class="s7">=</span><span class="s1"> allVideos</span><span class="s7">.</span><span class="s1">find</span><span class="s7">(</span><span class="s1">v </span><span class="s7">=&gt;</span><span class="s1"> v</span><span class="s7">.</span><span class="s1">id </span><span class="s7">===</span><span class="s1"> videoId</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">video</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>showModal</span><span class="s7">(</span><span class="s1">renderModalContent</span><span class="s7">(</span><span class="s1">video</span><span class="s7">));</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">            </span></span><span class="s1">// Listener para abrir modal de adicionar dossiê</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s1"> addButton </span><span class="s7">=</span><span class="s1"> e</span><span class="s7">.</span><span class="s1">target</span><span class="s7">.</span><span class="s1">closest</span><span class="s7">(</span><span class="s8">'.add-dossier-button'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">if</span><span class="s7">(</span><span class="s1">addButton</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> channelCode </span><span class="s7">=</span><span class="s1"> addButton</span><span class="s7">.</span><span class="s1">dataset</span><span class="s7">.</span><span class="s1">channelCode</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> dossierModal </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'dossier-modal'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>dossierModal</span><span class="s7">.</span><span class="s1">dataset</span><span class="s7">.</span><span class="s1">currentChannel </span><span class="s7">=</span><span class="s1"> channelCode</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>dossierModal</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">remove</span><span class="s7">(</span><span class="s8">'hidden'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'json-payload-input'</span><span class="s7">).</span><span class="s1">value </span><span class="s7">=</span><span class="s1"> </span><span class="s8">''</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'json-error'</span><span class="s7">).</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s8">'hidden'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">});</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'video-modal'</span><span class="s7">).</span><span class="s1">addEventListener</span><span class="s7">(</span><span class="s8">'click'</span><span class="s7">,</span><span class="s1"> </span><span class="s10">async</span><span class="s1"> </span><span class="s7">(</span><span class="s1">e</span><span class="s7">)</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">e</span><span class="s7">.</span><span class="s1">target</span><span class="s7">.</span><span class="s1">id </span><span class="s7">===</span><span class="s1"> </span><span class="s8">'close-modal-button'</span><span class="s1"> </span><span class="s7">||</span><span class="s1"> e</span><span class="s7">.</span><span class="s1">target</span><span class="s7">.</span><span class="s1">closest</span><span class="s7">(</span><span class="s8">'#close-modal-button'</span><span class="s7">))</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>closeModal</span><span class="s7">();</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">e</span><span class="s7">.</span><span class="s1">target</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">contains</span><span class="s7">(</span><span class="s8">'gemini-action-button'</span><span class="s7">))</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> button </span><span class="s7">=</span><span class="s1"> e</span><span class="s7">.</span><span class="s1">target</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> videoId </span><span class="s7">=</span><span class="s1"> button</span><span class="s7">.</span><span class="s1">dataset</span><span class="s7">.</span><span class="s1">videoId</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> field </span><span class="s7">=</span><span class="s1"> button</span><span class="s7">.</span><span class="s1">dataset</span><span class="s7">.</span><span class="s1">field</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> video </span><span class="s7">=</span><span class="s1"> allVideos</span><span class="s7">.</span><span class="s1">find</span><span class="s7">(</span><span class="s1">v </span><span class="s7">=&gt;</span><span class="s1"> v</span><span class="s7">.</span><span class="s1">docId </span><span class="s7">===</span><span class="s1"> videoId</span><span class="s7">);</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> container </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'gemini-output-container'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> loader </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'gemini-loader'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> outputDiv </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'gemini-output'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> actionButtons </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'gemini-action-buttons'</span><span class="s7">);</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>container</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">remove</span><span class="s7">(</span><span class="s8">'hidden'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>loader</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">remove</span><span class="s7">(</span><span class="s8">'hidden'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>outputDiv</span><span class="s7">.</span><span class="s1">textContent </span><span class="s7">=</span><span class="s1"> </span><span class="s8">''</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>actionButtons</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s8">'hidden'</span><span class="s7">);</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">let</span><span class="s1"> prompt</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">if</span><span class="s7">(</span><span class="s1">field </span><span class="s7">===</span><span class="s1"> </span><span class="s8">'titulo'</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p7"><span class="s5"><span class="Apple-converted-space">                    </span>prompt </span><span class="s7">=</span><span class="s5"> </span><span class="s1">`Com base neste roteiro, gere 5 alternativas de títulos e conjuntos de hashtags para um vídeo curto (TikTok/Shorts). Roteiro: "</span><span class="s7">${</span><span class="s5">video</span><span class="s7">.</span><span class="s5">roteiro</span><span class="s7">}</span><span class="s1">"`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">}</span><span class="s1"> </span><span class="s10">else</span><span class="s1"> </span><span class="s10">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">field </span><span class="s7">===</span><span class="s1"> </span><span class="s8">'roteiro'</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p7"><span class="s5"><span class="Apple-converted-space">                    </span>prompt </span><span class="s7">=</span><span class="s5"> </span><span class="s1">`Expanda este roteiro para um vídeo de ~25 segundos, mantendo a essência, mas adicionando mais detalhes e uma narração mais fluida. Roteiro base: "</span><span class="s7">${</span><span class="s5">video</span><span class="s7">.</span><span class="s5">roteiro</span><span class="s7">}</span><span class="s1">"`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">}</span><span class="s1"> </span><span class="s10">else</span><span class="s1"> </span><span class="s10">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">field </span><span class="s7">===</span><span class="s1"> </span><span class="s8">'prompt'</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p7"><span class="s5"><span class="Apple-converted-space">                    </span>prompt </span><span class="s7">=</span><span class="s5"> </span><span class="s1">`Otimize estes prompts de IA para gerar imagens cinematográficas e visualmente impressionantes. Mantenha o conceito, mas melhore a direção de arte. Prompts base: CENA 1: </span><span class="s7">${</span><span class="s5">video</span><span class="s7">.</span><span class="s5">promptCena1</span><span class="s7">}</span><span class="s1">, CENA 2: </span><span class="s7">${</span><span class="s5">video</span><span class="s7">.</span><span class="s5">promptCena2</span><span class="s7">}</span><span class="s1">`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> result </span><span class="s7">=</span><span class="s1"> </span><span class="s10">await</span><span class="s1"> callGeminiAPI</span><span class="s7">(</span><span class="s1">prompt</span><span class="s7">);</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>loader</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s8">'hidden'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>outputDiv</span><span class="s7">.</span><span class="s1">textContent </span><span class="s7">=</span><span class="s1"> result</span><span class="s7">;</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> saveButton </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'save-gemini-output'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>saveButton</span><span class="s7">.</span><span class="s1">dataset</span><span class="s7">.</span><span class="s1">videoId </span><span class="s7">=</span><span class="s1"> videoId</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>saveButton</span><span class="s7">.</span><span class="s1">dataset</span><span class="s7">.</span><span class="s1">field </span><span class="s7">=</span><span class="s1"> field</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>saveButton</span><span class="s7">.</span><span class="s1">dataset</span><span class="s7">.</span><span class="s1">content </span><span class="s7">=</span><span class="s1"> result</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>actionButtons</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">remove</span><span class="s7">(</span><span class="s8">'hidden'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">if</span><span class="s1"> </span><span class="s7">(</span><span class="s1">e</span><span class="s7">.</span><span class="s1">target</span><span class="s7">.</span><span class="s1">id </span><span class="s7">===</span><span class="s1"> </span><span class="s8">'save-gemini-output'</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> button </span><span class="s7">=</span><span class="s1"> e</span><span class="s7">.</span><span class="s1">target</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> videoId </span><span class="s7">=</span><span class="s1"> button</span><span class="s7">.</span><span class="s1">dataset</span><span class="s7">.</span><span class="s1">videoId</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> field </span><span class="s7">=</span><span class="s1"> button</span><span class="s7">.</span><span class="s1">dataset</span><span class="s7">.</span><span class="s1">field</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> content </span><span class="s7">=</span><span class="s1"> button</span><span class="s7">.</span><span class="s1">dataset</span><span class="s7">.</span><span class="s1">content</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> videoRef </span><span class="s7">=</span><span class="s1"> doc</span><span class="s7">(</span><span class="s1">db</span><span class="s7">,</span><span class="s1"> </span><span class="s8">`artifacts/</span><span class="s7">${</span><span class="s1">appId</span><span class="s7">}</span><span class="s8">/public/data/videos`</span><span class="s7">,</span><span class="s1"> videoId</span><span class="s7">);</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">let</span><span class="s1"> updateData </span><span class="s7">=</span><span class="s1"> </span><span class="s7">{};</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">if</span><span class="s7">(</span><span class="s1">field </span><span class="s7">===</span><span class="s1"> </span><span class="s8">'titulo'</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">                    </span></span><span class="s1">// A IA gera um bloco de texto, não vamos tentar parsear</span></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">                    </span></span><span class="s1">// Idealmente, o usuário copia e cola nos campos certos depois.</span></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">                    </span></span><span class="s1">// Aqui, vamos apenas adicionar como um comentário ou nota.</span></p>
-<p class="p7"><span class="s5"><span class="Apple-converted-space">                    </span>updateData</span><span class="s7">[</span><span class="s1">'notasIA'</span><span class="s7">]</span><span class="s5"> </span><span class="s7">=</span><span class="s5"> </span><span class="s1">`Sugestão de Títulos/Hashtags: </span><span class="s7">${</span><span class="s5">content</span><span class="s7">}</span><span class="s1">`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">}</span><span class="s1"> </span><span class="s10">else</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span>updateData</span><span class="s7">[</span><span class="s1">field</span><span class="s7">]</span><span class="s1"> </span><span class="s7">=</span><span class="s1"> content</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">await</span><span class="s1"> updateDoc</span><span class="s7">(</span><span class="s1">videoRef</span><span class="s7">,</span><span class="s1"> updateData</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'gemini-output-container'</span><span class="s7">).</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s8">'hidden'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">});</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s1">// Listeners do Modal de Adicionar Dossiê</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'cancel-dossier-button'</span><span class="s7">).</span><span class="s1">addEventListener</span><span class="s7">(</span><span class="s8">'click'</span><span class="s7">,</span><span class="s1"> </span><span class="s7">()</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">             </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'dossier-modal'</span><span class="s7">).</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s8">'hidden'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">});</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'save-dossier-button'</span><span class="s7">).</span><span class="s1">addEventListener</span><span class="s7">(</span><span class="s8">'click'</span><span class="s7">,</span><span class="s1"> </span><span class="s10">async</span><span class="s1"> </span><span class="s7">()</span><span class="s1"> </span><span class="s7">=&gt;</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s1"> jsonInput </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'json-payload-input'</span><span class="s7">).</span><span class="s1">value</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s1"> errorDiv </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'json-error'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">const</span><span class="s1"> channelCode </span><span class="s7">=</span><span class="s1"> document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'dossier-modal'</span><span class="s7">).</span><span class="s1">dataset</span><span class="s7">.</span><span class="s1">currentChannel</span><span class="s7">;</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s10">try</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> data </span><span class="s7">=</span><span class="s1"> </span><span class="s12">JSON</span><span class="s7">.</span><span class="s1">parse</span><span class="s7">(</span><span class="s1">jsonInput</span><span class="s7">);</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">                </span></span><span class="s1">// Validação mínima</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">if</span><span class="s1"> </span><span class="s7">(!</span><span class="s1">data</span><span class="s7">.</span><span class="s1">id </span><span class="s7">||</span><span class="s1"> </span><span class="s7">!</span><span class="s1">data</span><span class="s7">.</span><span class="s1">tituloOtimizado</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p7"><span class="s5"><span class="Apple-converted-space">                    </span></span><span class="s10">throw</span><span class="s5"> </span><span class="s10">new</span><span class="s5"> </span><span class="s12">Error</span><span class="s7">(</span><span class="s1">"O JSON precisa ter pelo menos os campos 'id' e 'tituloOtimizado'."</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p6"><span class="s5"><span class="Apple-converted-space">                </span></span><span class="s1">// Garantir que o ID pertence ao canal correto</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">if</span><span class="s1"> </span><span class="s7">(!</span><span class="s1">data</span><span class="s7">.</span><span class="s1">id</span><span class="s7">.</span><span class="s1">startsWith</span><span class="s7">(</span><span class="s1">channelCode</span><span class="s7">))</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                    </span></span><span class="s10">throw</span><span class="s1"> </span><span class="s10">new</span><span class="s1"> </span><span class="s12">Error</span><span class="s7">(</span><span class="s8">`O ID "</span><span class="s7">${</span><span class="s1">data</span><span class="s7">.</span><span class="s1">id</span><span class="s7">}</span><span class="s8">" não pertence ao canal </span><span class="s7">${</span><span class="s1">getChannelName</span><span class="s7">(</span><span class="s1">channelCode</span><span class="s7">)}</span><span class="s8">.`</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s7">}</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">const</span><span class="s1"> videoRef </span><span class="s7">=</span><span class="s1"> doc</span><span class="s7">(</span><span class="s1">db</span><span class="s7">,</span><span class="s1"> </span><span class="s8">`artifacts/</span><span class="s7">${</span><span class="s1">appId</span><span class="s7">}</span><span class="s8">/public/data/videos`</span><span class="s7">,</span><span class="s1"> data</span><span class="s7">.</span><span class="s1">id</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span></span><span class="s10">await</span><span class="s1"> setDoc</span><span class="s7">(</span><span class="s1">videoRef</span><span class="s7">,</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> </span><span class="s7">...</span><span class="s1">data</span><span class="s7">,</span><span class="s1"> createdAt</span><span class="s7">:</span><span class="s1"> serverTimestamp</span><span class="s7">()</span><span class="s1"> </span><span class="s7">});</span></p>
-<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>document</span><span class="s7">.</span><span class="s1">getElementById</span><span class="s7">(</span><span class="s8">'dossier-modal'</span><span class="s7">).</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s8">'hidden'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>errorDiv</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">add</span><span class="s7">(</span><span class="s8">'hidden'</span><span class="s7">);</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span><span class="s1"> </span><span class="s10">catch</span><span class="s1"> </span><span class="s7">(</span><span class="s1">err</span><span class="s7">)</span><span class="s1"> </span><span class="s7">{</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>errorDiv</span><span class="s7">.</span><span class="s1">textContent </span><span class="s7">=</span><span class="s1"> </span><span class="s8">`Erro: </span><span class="s7">${</span><span class="s1">err</span><span class="s7">.</span><span class="s1">message</span><span class="s7">}</span><span class="s8">`</span><span class="s7">;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">                </span>errorDiv</span><span class="s7">.</span><span class="s1">classList</span><span class="s7">.</span><span class="s1">remove</span><span class="s7">(</span><span class="s8">'hidden'</span><span class="s7">);</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">            </span></span><span class="s7">}</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">        </span></span><span class="s7">});</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p1"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;/</span><span class="s1">script</span><span class="s3">&gt;</span></p>
-<p class="p5"><span class="s11"></span><br></p>
-<p class="p1"><span class="s3">&lt;/</span><span class="s1">body</span><span class="s3">&gt;</span></p>
-<p class="p1"><span class="s3">&lt;/</span><span class="s1">html</span><span class="s3">&gt;</span></p>
-<p class="p4"><span class="s1">```</span></p>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-6 lg:p-8">
+        
+        <header class="mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Painel de Controle</h1>
+            <p class="text-gray-600 mt-1">Operação Avalanche: Sprint 1</p>
+        </header>
+
+        <!-- Navegação por Abas -->
+        <div class="border-b border-gray-200 mb-6">
+            <nav class="-mb-px flex space-x-6" id="tabs">
+                <button data-tab="dashboard" class="py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-indigo-600 hover:border-gray-300 tab-active">Visão Geral</button>
+                <button data-tab="SG" class="py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-indigo-600 hover:border-gray-300">Surto Generativo</button>
+                <button data-tab="UMC" class="py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-indigo-600 hover:border-gray-300">Um Minuto de Conhecimento</button>
+                <button data-tab="OC" class="py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-indigo-600 hover:border-gray-300">Oásis Cotidiano</button>
+                <button data-tab="BD" class="py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-indigo-600 hover:border-gray-300">Bestiário Digital</button>
+                <button data-tab="FA" class="py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-indigo-600 hover:border-gray-300">Fábrica de Arrepios</button>
+            </nav>
+        </div>
+
+        <!-- Conteúdo das Abas -->
+        <main id="tab-content">
+            <!-- Aba de Visão Geral (Dashboard) -->
+            <div id="dashboard-content" class="tab-pane active">
+                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-sm font-medium text-gray-500">Vídeos Publicados</h3>
+                        <p class="mt-1 text-3xl font-semibold text-gray-900" id="kpi-total-videos">0</p>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-sm font-medium text-gray-500">Views (24h)</h3>
+                        <p class="mt-1 text-3xl font-semibold text-gray-900" id="kpi-total-views">0</p>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-sm font-medium text-gray-500">Novos Seguidores</h3>
+                        <p class="mt-1 text-3xl font-semibold text-gray-900" id="kpi-total-followers">0</p>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-sm font-medium text-gray-500">Quociente de Viralidade Médio</h3>
+                        <p class="mt-1 text-3xl font-semibold text-gray-900" id="kpi-avg-qv">0.00</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 bg-white p-6 rounded-lg shadow">
+                     <h3 class="text-lg font-medium text-gray-900 mb-4">Performance dos Canais (Views)</h3>
+                     <div class="h-96">
+                        <canvas id="channelsChart"></canvas>
+                     </div>
+                </div>
+            </div>
+
+            <!-- Abas dos Canais (serão preenchidas dinamicamente) -->
+            <div id="SG-content" class="tab-pane hidden"></div>
+            <div id="UMC-content" class="tab-pane hidden"></div>
+            <div id="OC-content" class="tab-pane hidden"></div>
+            <div id="BD-content" class="tab-pane hidden"></div>
+            <div id="FA-content" class="tab-pane hidden"></div>
+        </main>
+    </div>
+
+    <!-- Modal para Detalhes do Vídeo -->
+    <div id="video-modal" class="modal-backdrop hidden">
+        <div id="modal-content-wrapper" class="bg-white rounded-lg shadow-xl w-11/12 max-w-4xl modal-content overflow-y-auto">
+            <!-- O conteúdo será injetado aqui -->
+        </div>
+    </div>
+    
+    <!-- Modal para Adicionar Dossiê -->
+    <div id="dossier-modal" class="modal-backdrop hidden">
+        <div class="bg-white rounded-lg shadow-xl w-11/12 max-w-2xl p-6">
+            <h2 class="text-xl font-bold mb-4">Adicionar Novo Dossiê</h2>
+            <p class="text-sm text-gray-600 mb-4">Cole o payload JSON fornecido para criar um novo vídeo para este canal.</p>
+            <textarea id="json-payload-input" class="w-full h-48 p-2 border border-gray-300 rounded-md font-mono text-sm" placeholder='{"id": "CANAL_00X", "status": "Para Produzir", ...}'></textarea>
+            <div id="json-error" class="text-red-500 text-sm mt-2 hidden">JSON inválido. Por favor, verifique o formato.</div>
+            <div class="mt-6 flex justify-end space-x-4">
+                <button id="cancel-dossier-button" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">Cancelar</button>
+                <button id="save-dossier-button" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "[https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js](https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js)";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "[https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js](https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js)";
+        import { getFirestore, doc, collection, onSnapshot, addDoc, updateDoc, setDoc, serverTimestamp } from "[https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js](https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js)";
+
+        // IMPORTANTE: Substitua os valores abaixo pelos do seu projeto no Firebase
+        const firebaseConfig = {
+            apiKey: "SUA_API_KEY",
+            authDomain: "SEU_AUTH_DOMAIN",
+            projectId: "SEU_PROJECT_ID",
+            storageBucket: "SEU_STORAGE_BUCKET",
+            messagingSenderId: "SEU_MESSAGING_SENDER_ID",
+            appId: "SEU_APP_ID"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // VARIÁVEIS GLOBAIS
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-avalanche-app';
+        let userId = null;
+        let allVideos = [];
+
+        // LÓGICA DE AUTENTICAÇÃO
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                userId = user.uid;
+                initializeDataListeners();
+            } else {
+                signInAnonymously(auth).catch((error) => {
+                    console.error("Erro no login anônimo:", error);
+                });
+            }
+        });
+
+        // FUNÇÕES DA API DO GEMINI
+        async function callGeminiAPI(prompt, systemInstruction = "Você é um especialista em marketing viral para mídias sociais.") {
+            const model = "gemini-2.0-flash";
+            const chatHistory = [
+                { role: "system", parts: [{ text: systemInstruction }] },
+                { role: "user", parts: [{ text: prompt }] }
+            ];
+            const payload = { contents: chatHistory };
+            const apiKey = ""; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                if (result.candidates && result.candidates[0] && result.candidates[0].content) {
+                    return result.candidates[0].content.parts[0].text;
+                } else {
+                    console.error("Resposta inesperada da API Gemini:", result);
+                    return "Erro ao gerar resposta. Tente novamente.";
+                }
+            } catch (error) {
+                console.error("Erro ao chamar a API Gemini:", error);
+                return "Erro de conexão com a API. Verifique o console.";
+            }
+        }
+
+        // FUNÇÕES AUXILIARES E DE RENDERIZAÇÃO
+        function getChannelName(channelCode) {
+            const names = {
+                SG: 'Surto Generativo',
+                UMC: 'Um Minuto de Conhecimento',
+                OC: 'Oásis Cotidiano',
+                BD: 'Bestiário Digital',
+                FA: 'Fábrica de Arrepios'
+            };
+            return names[channelCode] || 'Desconhecido';
+        }
+        
+        function renderChannelContent(channelCode) {
+            const contentDiv = document.getElementById(`${channelCode}-content`);
+            if (!contentDiv) return;
+            const channelVideos = allVideos.filter(v => v.id.startsWith(channelCode));
+            
+            let html = `
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-gray-800">${getChannelName(channelCode)}</h2>
+                    <button data-channel-code="${channelCode}" class="add-dossier-button px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm font-medium">
+                        + Adicionar Dossiê
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            `;
+
+            if (channelVideos.length === 0) {
+                 html += `<p class="text-gray-500 col-span-full">Nenhum dossiê encontrado para este canal.</p>`;
+            } else {
+                channelVideos.sort((a,b) => a.id.localeCompare(b.id)).forEach(video => {
+                    html += `
+                        <div class="bg-white p-5 rounded-lg shadow cursor-pointer hover:shadow-lg transition-shadow video-card" data-video-id="${video.id}">
+                            <h3 class="font-bold text-gray-900 truncate">${video.tituloOtimizado}</h3>
+                            <p class="text-sm text-gray-500 mt-1">${video.id}</p>
+                            <span class="mt-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${video.status === 'Publicado' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">
+                                ${video.status}
+                            </span>
+                        </div>
+                    `;
+                });
+            }
+            html += `</div>`;
+            contentDiv.innerHTML = html;
+        }
+        
+        function renderDashboard() {
+            document.getElementById('kpi-total-videos').textContent = allVideos.filter(v => v.status === 'Publicado').length;
+            
+            const totalViews = allVideos.reduce((acc, v) => acc + (v.views24h || 0), 0);
+            document.getElementById('kpi-total-views').textContent = totalViews.toLocaleString('pt-BR');
+
+            const totalFollowers = allVideos.reduce((acc, v) => acc + (v.novosSeguidores || 0), 0);
+            document.getElementById('kpi-total-followers').textContent = totalFollowers.toLocaleString('pt-BR');
+
+            const videosWithQv = allVideos.filter(v => v.qv > 0);
+            const avgQv = videosWithQv.length > 0 
+                ? (videosWithQv.reduce((acc, v) => acc + v.qv, 0) / videosWithQv.length).toFixed(2)
+                : '0.00';
+            document.getElementById('kpi-avg-qv').textContent = avgQv;
+
+            renderChannelsChart();
+        }
+
+        let channelsChartInstance;
+        function renderChannelsChart() {
+            const ctx = document.getElementById('channelsChart').getContext('2d');
+            const channelCodes = ['SG', 'UMC', 'OC', 'BD', 'FA'];
+            const labels = channelCodes.map(getChannelName);
+            const data = channelCodes.map(code => 
+                allVideos
+                    .filter(v => v.id.startsWith(code))
+                    .reduce((acc, v) => acc + (v.views24h || 0), 0)
+            );
+
+            if(channelsChartInstance) {
+                channelsChartInstance.destroy();
+            }
+
+            channelsChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Views (24h)',
+                        data: data,
+                        backgroundColor: 'rgba(79, 70, 229, 0.8)',
+                        borderColor: 'rgba(79, 70, 229, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+        
+        function showModal(content) {
+            const modalContentWrapper = document.getElementById('modal-content-wrapper');
+            modalContentWrapper.innerHTML = content;
+            document.getElementById('video-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('video-modal').classList.add('hidden');
+            const modalContentWrapper = document.getElementById('modal-content-wrapper');
+            modalContentWrapper.innerHTML = '';
+        }
+
+        function renderModalContent(video) {
+            return `
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                           <h2 class="text-2xl font-bold text-gray-900">${video.tituloOtimizado}</h2>
+                           <p class="text-sm text-gray-500">${video.id} - ${getChannelName(video.id.substring(0,2))}</p>
+                        </div>
+                        <button id="close-modal-button" class="text-gray-400 hover:text-gray-600 text-3xl leading-none">&times;</button>
+                    </div>
+                     <div class="space-y-6">
+                        <div>
+                            <h3 class="font-semibold text-gray-800 border-b pb-2 mb-3">Estratégia</h3>
+                            <p class="text-sm text-gray-700"><strong class="text-gray-600">Racional:</strong> ${video.racionalEstrategico}</p>
+                            <p class="text-sm text-gray-700 mt-1"><strong class="text-gray-600">Gatilho Psicológico:</strong> ${video.gatilhoPsicologico}</p>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800 border-b pb-2 mb-3">Roteiro</h3>
+                            <div class="bg-gray-50 p-4 rounded-md text-sm text-gray-700 whitespace-pre-wrap" id="roteiro-content">${video.roteiro}</div>
+                            <div class="flex justify-end mt-2">
+                                <button data-doc-id="${video.docId}" data-field="roteiro" class="gemini-action-button text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-md hover:bg-indigo-200">✨ Expandir Roteiro</button>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800 border-b pb-2 mb-3">Títulos e Hashtags</h3>
+                            <div class="bg-gray-50 p-4 rounded-md text-sm text-gray-700" id="titulo-content">
+                                <p><strong>Título:</strong> ${video.tituloOtimizado}</p>
+                                <p class="mt-2"><strong>Hashtags:</strong> ${video.hashtags}</p>
+                            </div>
+                            <div class="flex justify-end mt-2">
+                                <button data-doc-id="${video.docId}" data-field="titulo" class="gemini-action-button text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-md hover:bg-indigo-200">✨ Gerar Alternativas</button>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800 border-b pb-2 mb-3">Prompts de Cena (IA)</h3>
+                            <div class="bg-gray-50 p-4 rounded-md text-sm text-gray-700 font-mono" id="prompt-content">
+                                <p><strong>CENA 1:</strong> ${video.promptCena1}</p>
+                                ${video.promptCena2 ? `<p class="mt-2"><strong>CENA 2:</strong> ${video.promptCena2}</p>` : ''}
+                            </div>
+                             <div class="flex justify-end mt-2">
+                                <button data-doc-id="${video.docId}" data-field="prompt" class="gemini-action-button text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-md hover:bg-indigo-200">✨ Otimizar Prompts</button>
+                            </div>
+                        </div>
+                        <div id="gemini-output-container" class="hidden">
+                             <h3 class="font-semibold text-gray-800 border-b pb-2 mb-3">Sugestão da IA</h3>
+                             <div id="gemini-loader" class="loader mx-auto my-4"></div>
+                             <div id="gemini-output" class="bg-indigo-50 p-4 rounded-md text-sm text-gray-800 whitespace-pre-wrap"></div>
+                             <div id="gemini-action-buttons" class="flex justify-end mt-4 hidden">
+                                <button id="save-gemini-output" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm">Salvar Alteração</button>
+                             </div>
+                        </div>
+                    </div>
+                </div>`;
+        }
+
+        // FUNÇÃO DE INICIALIZAÇÃO E LISTENERS DE UI
+        function initializeDataListeners() {
+            if (!userId) return;
+            const videoCollectionRef = collection(db, `artifacts/${appId}/public/data/videos`);
+            onSnapshot(videoCollectionRef, (snapshot) => {
+                allVideos = snapshot.docs.map(doc => ({...doc.data(), docId: doc.id}));
+                renderAllChannels();
+                renderDashboard();
+            });
+        }
+        
+        function renderAllChannels() {
+             const channelCodes = ['SG', 'UMC', 'OC', 'BD', 'FA'];
+             channelCodes.forEach(code => renderChannelContent(code));
+        }
+
+        document.getElementById('tabs').addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                const tab = e.target.dataset.tab;
+                
+                document.querySelectorAll('#tabs button').forEach(b => b.classList.remove('tab-active'));
+                e.target.classList.add('tab-active');
+
+                document.querySelectorAll('#tab-content .tab-pane').forEach(p => p.classList.add('hidden'));
+                document.getElementById(`${tab}-content`).classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('tab-content').addEventListener('click', (e) => {
+            const card = e.target.closest('.video-card');
+            if (card) {
+                const videoId = card.dataset.videoId;
+                const video = allVideos.find(v => v.id === videoId);
+                if (video) {
+                    showModal(renderModalContent(video));
+                }
+                return;
+            }
+            
+            const addButton = e.target.closest('.add-dossier-button');
+            if(addButton) {
+                const channelCode = addButton.dataset.channelCode;
+                const dossierModal = document.getElementById('dossier-modal');
+                dossierModal.dataset.currentChannel = channelCode;
+                dossierModal.classList.remove('hidden');
+                document.getElementById('json-payload-input').value = '';
+                document.getElementById('json-error').classList.add('hidden');
+            }
+        });
+        
+        document.getElementById('video-modal').addEventListener('click', async (e) => {
+            if (e.target.id === 'close-modal-button' || e.target.closest('#close-modal-button') || e.target.classList.contains('modal-backdrop')) {
+                closeModal();
+                return;
+            }
+
+            const geminiButton = e.target.closest('.gemini-action-button');
+            if (geminiButton) {
+                const videoId = geminiButton.dataset.docId;
+                const field = geminiButton.dataset.field;
+                const video = allVideos.find(v => v.docId === videoId);
+                
+                const container = document.getElementById('gemini-output-container');
+                const loader = document.getElementById('gemini-loader');
+                const outputDiv = document.getElementById('gemini-output');
+                const actionButtons = document.getElementById('gemini-action-buttons');
+
+                container.classList.remove('hidden');
+                loader.classList.remove('hidden');
+                outputDiv.textContent = '';
+                actionButtons.classList.add('hidden');
+
+                let prompt;
+                if(field === 'titulo') {
+                    prompt = `Com base neste roteiro, gere 5 alternativas de títulos e conjuntos de hashtags para um vídeo curto (TikTok/Shorts). Roteiro: "${video.roteiro}"`;
+                } else if (field === 'roteiro') {
+                    prompt = `Expanda este roteiro para um vídeo de ~25 segundos, mantendo a essência, mas adicionando mais detalhes e uma narração mais fluida. Roteiro base: "${video.roteiro}"`;
+                } else if (field === 'prompt') {
+                    prompt = `Otimize estes prompts de IA para gerar imagens cinematográficas e visualmente impressionantes. Mantenha o conceito, mas melhore a direção de arte. Prompts base: CENA 1: ${video.promptCena1}, CENA 2: ${video.promptCena2}`;
+                }
+
+                const result = await callGeminiAPI(prompt);
+                
+                loader.classList.add('hidden');
+                outputDiv.textContent = result;
+                
+                const saveButton = document.getElementById('save-gemini-output');
+                saveButton.dataset.docId = videoId;
+                saveButton.dataset.field = field;
+                saveButton.dataset.content = result;
+                actionButtons.classList.remove('hidden');
+                return;
+            }
+            
+            const saveGeminiButton = e.target.closest('#save-gemini-output');
+            if (saveGeminiButton) {
+                const videoId = saveGeminiButton.dataset.docId;
+                const field = saveGeminiButton.dataset.field;
+                const content = saveGeminiButton.dataset.content;
+                const videoRef = doc(db, `artifacts/${appId}/public/data/videos`, videoId);
+
+                let updateData = {};
+                // Para simplificar, vamos salvar a sugestão inteira em um campo de notas.
+                // O usuário pode copiar e colar manualmente se gostar.
+                const fieldMap = {
+                    'titulo': 'notas_titulo',
+                    'roteiro': 'notas_roteiro',
+                    'prompt': 'notas_prompt'
+                };
+                updateData[fieldMap[field]] = content;
+                
+                await updateDoc(videoRef, updateData);
+                document.getElementById('gemini-output-container').classList.add('hidden');
+            }
+        });
+        
+        // CORREÇÃO: Listener para o modal de adicionar dossiê usando delegação de evento.
+        document.getElementById('dossier-modal').addEventListener('click', async (e) => {
+            // Fecha o modal se clicar no backdrop
+            if (e.target.id === 'dossier-modal') {
+                e.currentTarget.classList.add('hidden');
+                return;
+            }
+            
+            // Botão Cancelar
+            const cancelButton = e.target.closest('#cancel-dossier-button');
+            if (cancelButton) {
+                e.currentTarget.classList.add('hidden');
+                return;
+            }
+
+            // Botão Salvar
+            const saveButton = e.target.closest('#save-dossier-button');
+            if (saveButton) {
+                const jsonInput = document.getElementById('json-payload-input').value;
+                const errorDiv = document.getElementById('json-error');
+                const channelCode = e.currentTarget.dataset.currentChannel;
+
+                try {
+                    const data = JSON.parse(jsonInput);
+                    
+                    if (!data.id || !data.tituloOtimizado) {
+                        throw new Error("O JSON precisa ter pelo menos os campos 'id' e 'tituloOtimizado'.");
+                    }
+                    if (!data.id.startsWith(channelCode)) {
+                        throw new Error(`O ID "${data.id}" não pertence ao canal ${getChannelName(channelCode)}.`);
+                    }
+
+                    const videoRef = doc(db, `artifacts/${appId}/public/data/videos`, data.id);
+                    await setDoc(videoRef, { ...data, createdAt: serverTimestamp() });
+                    
+                    e.currentTarget.classList.add('hidden');
+                    errorDiv.classList.add('hidden');
+
+                } catch (err) {
+                    errorDiv.textContent = `Erro: ${err.message}`;
+                    errorDiv.classList.remove('hidden');
+                }
+            }
+        });
+
+    </script>
+
 </body>
 </html>
+```
