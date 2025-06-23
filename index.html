@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Controle: Operação Avalanche</title>
+    <title>Painel de Controle: Operação Avalanche v1.1</title>
     <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
     <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap)" rel="stylesheet">
     <script src="[https://cdn.jsdelivr.net/npm/chart.js](https://cdn.jsdelivr.net/npm/chart.js)"></script>
@@ -67,9 +67,6 @@
         import { getAuth, signInAnonymously, onAuthStateChanged } from "[https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js](https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js)";
         import { getFirestore, collection, onSnapshot, addDoc, setDoc, serverTimestamp } from "[https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js](https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js)";
 
-        // *********************************************************************************
-        // ** PASSO CRÍTICO: SUBSTITUA O BLOCO INTEIRO ABAIXO PELO SEU firebaseConfig **
-        // *********************************************************************************
         const firebaseConfig = {
             apiKey: "AIzaSyCD6JqUlL101H9WkS8CGXuDBcmdfW0oQVs",
             authDomain: "avalanche-3f4ad.firebaseapp.com",
@@ -79,7 +76,6 @@
             appId: "1:114473265727:web:5491159356d19c0652a68a",
             measurementId: "G-81B32BEZ65"
         };
-        // *********************************************************************************
 
         // --- Estado Global e Inicialização ---
         let db, auth;
