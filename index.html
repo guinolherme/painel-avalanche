@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Controle: Operação Avalanche v1.1</title>
+    <title>Painel de Controle: Operação Avalanche v1.2</title>
     <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
     <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap)" rel="stylesheet">
     <script src="[https://cdn.jsdelivr.net/npm/chart.js](https://cdn.jsdelivr.net/npm/chart.js)"></script>
@@ -25,7 +25,7 @@
 
     <div id="error-overlay" class="fixed inset-0 bg-red-800 text-white p-8 z-50 hidden flex-col justify-center items-center text-center">
         <h2 class="text-3xl font-bold mb-4">ERRO DE CONFIGURAÇÃO</h2>
-        <p class="text-lg max-w-2xl">As chaves de configuração do Firebase não foram inseridas no arquivo `index.html`. Por favor, edite o código, substitua o objeto `firebaseConfig` de exemplo pelas suas chaves reais encontradas nas configurações do seu projeto no Firebase.</p>
+        <p class="text-lg max-w-2xl">O painel não conseguiu carregar a configuração do Firebase automaticamente. Verifique se o app está sendo executado no ambiente correto ou se as regras de permissão do projeto estão configuradas corretamente.</p>
     </div>
 
     <div id="app-container" class="container mx-auto p-4 md:p-6 lg:p-8">
@@ -46,9 +46,11 @@
         </div>
 
         <main id="main-content">
-            </main>
+            <!-- O conteúdo será renderizado aqui -->
+        </main>
     </div>
 
+    <!-- Modal para Adicionar Dossiê -->
     <div id="dossier-modal" class="modal-backdrop">
         <div class="bg-white rounded-lg shadow-xl w-11/12 max-w-2xl p-6 modal-content">
             <h2 class="text-xl font-bold mb-4">Adicionar Novo Dossiê</h2>
@@ -57,33 +59,37 @@
             <div id="json-error" class="text-red-500 text-sm mt-2 hidden"></div>
             <div class="mt-6 flex justify-end space-x-4">
                 <button data-action="close-dossier-modal" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">Cancelar</button>
-                <button id="save-dossier-button" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Salvar</button>
+                <button data-action="save-dossier" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Salvar</button>
             </div>
         </div>
     </div>
     
     <script type="module">
         import { initializeApp } from "[https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js](https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js)";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "[https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js](https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js)";
-        import { getFirestore, collection, onSnapshot, addDoc, setDoc, serverTimestamp } from "[https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js](https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js)";
+        import { getAuth, signInWithCustomToken, signInAnonymously } from "[https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js](https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js)";
+        import { getFirestore, doc, collection, onSnapshot, setDoc, serverTimestamp } from "[https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js](https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js)";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCD6JqUlL101H9WkS8CGXuDBcmdfW0oQVs",
-            authDomain: "avalanche-3f4ad.firebaseapp.com",
-            projectId: "avalanche-3f4ad",
-            storageBucket: "avalanche-3f4ad.firebasestorage.app",
-            messagingSenderId: "114473265727",
-            appId: "1:114473265727:web:5491159356d19c0652a68a",
-            measurementId: "G-81B32BEZ65"
+        // --- Configuração Automática e Inicialização ---
+
+        const getFirebaseConfig = () => {
+            try {
+                if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+                    return JSON.parse(__firebase_config);
+                }
+            } catch (e) {
+                console.error("Erro ao parsear __firebase_config:", e);
+            }
+            return null;
         };
 
-        // --- Estado Global e Inicialização ---
-        let db, auth;
+        const firebaseConfig = getFirebaseConfig();
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-avalanche-app';
+        let db, auth, userId;
         let allVideos = [];
         const channelCodes = ['SG', 'UMC', 'OC', 'BD', 'FA'];
 
         function main() {
-            if (!firebaseConfig || firebaseConfig.apiKey === "SUA_API_KEY") {
+            if (!firebaseConfig) {
                 document.getElementById('app-container').classList.add('hidden');
                 document.getElementById('error-overlay').classList.add('flex');
                 return;
@@ -93,28 +99,38 @@
             auth = getAuth(app);
             db = getFirestore(app);
             
-            onAuthStateChanged(auth, user => {
-                if (!user) {
-                    signInAnonymously(auth).catch(error => console.error("Login anônimo falhou", error));
-                } else {
-                    initializeDataListeners();
-                }
-            });
-            
+            authenticateUser();
             initializeUIListeners();
             renderInitialLayout();
+        }
+        
+        async function authenticateUser() {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                userId = auth.currentUser.uid;
+                initializeDataListeners();
+            } catch (error) {
+                console.error("Autenticação falhou:", error);
+                document.getElementById('error-overlay').classList.add('flex');
+                document.getElementById('error-overlay').innerHTML = `<h2>Erro de Autenticação</h2><p>${error.message}</p>`;
+            }
         }
 
         // --- Listeners de Dados e UI ---
 
         function initializeDataListeners() {
-            const videoCollectionRef = collection(db, `videos`);
+            if (!userId) return;
+            const videoCollectionRef = collection(db, `artifacts/${appId}/public/data/videos`);
             onSnapshot(videoCollectionRef, (snapshot) => {
                 allVideos = snapshot.docs.map(doc => ({...doc.data(), docId: doc.id}));
                 renderCurrentTab();
             }, (error) => {
                 console.error("Erro ao buscar dados do Firestore: ", error);
-                document.getElementById('main-content').innerHTML = `<p class="text-red-500">Erro ao carregar dados. Verifique as regras do Firestore.</p>`;
+                document.getElementById('main-content').innerHTML = `<p class="text-red-500">Erro ao carregar dados. Verifique as regras do Firestore e se a coleção 'videos' existe.</p>`;
             });
         }
 
@@ -123,47 +139,54 @@
         }
 
         async function handleGlobalClick(e) {
-            const action = e.target.dataset.action;
-            const tab = e.target.dataset.tab;
+            const actionTarget = e.target.closest('[data-action]');
+            if (!actionTarget) return;
 
-            if (tab) {
-                // Navegação por abas
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('tab-active'));
-                e.target.classList.add('tab-active');
-                renderCurrentTab();
-            } else if (action === 'open-add-dossier') {
-                // Abrir modal de adicionar
-                const channelCode = e.target.dataset.channelCode;
-                const modal = document.getElementById('dossier-modal');
-                modal.dataset.currentChannel = channelCode;
-                modal.classList.add('flex');
-                document.getElementById('json-payload-input').value = '';
-                document.getElementById('json-error').classList.add('hidden');
-            } else if (action === 'close-dossier-modal' || e.target.id === 'cancel-dossier-button' || e.target.id === 'dossier-modal') {
-                // Fechar modal de adicionar
-                document.getElementById('dossier-modal').classList.remove('flex');
-            } else if (e.target.id === 'save-dossier-button') {
-                // Salvar novo dossiê
-                const jsonInput = document.getElementById('json-payload-input').value;
-                const errorDiv = document.getElementById('json-error');
-                const channelCode = document.getElementById('dossier-modal').dataset.currentChannel;
-                
-                try {
-                    const data = JSON.parse(jsonInput);
-                    if (!data.id || !data.tituloOtimizado) throw new Error("JSON precisa ter 'id' e 'tituloOtimizado'.");
-                    if (!data.id.startsWith(channelCode)) throw new Error(`ID "${data.id}" não pertence ao canal ${getChannelName(channelCode)}.`);
-                    
-                    const videoRef = doc(db, "videos", data.id);
-                    await setDoc(videoRef, { ...data, createdAt: serverTimestamp() });
-                    
-                    document.getElementById('dossier-modal').classList.remove('flex');
-                } catch (err) {
-                    errorDiv.textContent = `Erro: ${err.message}`;
-                    errorDiv.classList.remove('hidden');
-                }
+            const { action, tab, channelCode } = actionTarget.dataset;
+
+            switch(action) {
+                case 'navigate-tab':
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('tab-active'));
+                    actionTarget.classList.add('tab-active');
+                    renderCurrentTab();
+                    break;
+                case 'open-add-dossier':
+                    const modal = document.getElementById('dossier-modal');
+                    modal.dataset.currentChannel = channelCode;
+                    modal.classList.add('flex');
+                    document.getElementById('json-payload-input').value = '';
+                    document.getElementById('json-error').classList.add('hidden');
+                    break;
+                case 'close-dossier-modal':
+                     document.getElementById('dossier-modal').classList.remove('flex');
+                    break;
+                case 'save-dossier':
+                    await saveDossier();
+                    break;
             }
         }
         
+        async function saveDossier() {
+            const modal = document.getElementById('dossier-modal');
+            const jsonInput = document.getElementById('json-payload-input').value;
+            const errorDiv = document.getElementById('json-error');
+            const channelCode = modal.dataset.currentChannel;
+            
+            try {
+                const data = JSON.parse(jsonInput);
+                if (!data.id || !data.tituloOtimizado) throw new Error("JSON precisa ter 'id' e 'tituloOtimizado'.");
+                if (!data.id.startsWith(channelCode)) throw new Error(`ID "${data.id}" não pertence ao canal ${getChannelName(channelCode)}.`);
+                
+                const videoRef = doc(db, `artifacts/${appId}/public/data/videos`, data.id);
+                await setDoc(videoRef, { ...data, createdAt: serverTimestamp(), status: 'Para Produzir' });
+                
+                modal.classList.remove('flex');
+            } catch (err) {
+                errorDiv.textContent = `Erro: ${err.message}`;
+                errorDiv.classList.remove('hidden');
+            }
+        }
+
         // --- Funções de Renderização ---
 
         function getActiveTab() {
@@ -173,19 +196,17 @@
         function renderCurrentTab() {
             const activeTab = getActiveTab();
             const mainContent = document.getElementById('main-content');
-
-            document.querySelectorAll('.tab-pane').forEach(p => p.remove());
+            mainContent.innerHTML = ''; // Limpa antes de renderizar
 
             const pane = document.createElement('div');
             pane.id = `${activeTab}-content`;
-            pane.className = 'tab-pane';
-            mainContent.appendChild(pane);
-
+            
             if (activeTab === 'dashboard') {
                 renderDashboard(pane);
             } else {
                 renderChannelContent(activeTab, pane);
             }
+            mainContent.appendChild(pane);
         }
 
         function getChannelName(channelCode) {
@@ -194,6 +215,11 @@
         }
         
         function renderInitialLayout() {
+            const nav = document.getElementById('tabs-nav');
+            nav.innerHTML = `
+                <button data-action="navigate-tab" data-tab="dashboard" class="py-4 px-1 border-b-2 font-medium text-sm tab tab-active">Visão Geral</button>
+                ${channelCodes.map(code => `<button data-action="navigate-tab" data-tab="${code}" class="py-4 px-1 border-b-2 font-medium text-sm tab">${getChannelName(code)}</button>`).join('')}
+            `;
             renderCurrentTab();
         }
 
@@ -230,10 +256,9 @@
                      <div class="h-96"><canvas id="channelsChart"></canvas></div>
                 </div>`;
             
-            const totalPublished = allVideos.filter(v => v.status === 'Publicado').length;
-            document.getElementById('kpi-total-videos').textContent = totalPublished;
-            
-            // ... (rest of kpi logic) ...
+            // Lógica dos KPIs
+            const publishedVideos = allVideos.filter(v => v.status === 'Publicado');
+            document.getElementById('kpi-total-videos').textContent = publishedVideos.length;
 
             renderChannelsChart();
         }
@@ -242,12 +267,21 @@
         function renderChannelsChart() {
              const ctx = document.getElementById('channelsChart')?.getContext('2d');
              if(!ctx) return;
-             //... Chart rendering logic ...
+             if(channelsChartInstance) channelsChartInstance.destroy();
+             
+             const labels = channelCodes.map(getChannelName);
+             const data = channelCodes.map(code => 
+                allVideos.filter(v => v.id.startsWith(code) && v.status === 'Publicado').reduce((sum, v) => sum + (v.views24h || 0), 0)
+             );
+
+             channelsChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: { labels, datasets: [{ label: 'Views (24h)', data, backgroundColor: 'rgba(79, 70, 229, 0.8)' }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+            });
         }
         
-        // --- Ponto de Entrada da Aplicação ---
         main();
-
     </script>
 </body>
 </html>
